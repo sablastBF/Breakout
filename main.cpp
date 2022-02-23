@@ -1,11 +1,10 @@
-#include <iostream>
 
-using namespace std;
+#include "game.hpp"
 
 
-int main(){
-    int a;
-    cin >> a;
-    cout << a<<endl;
+int main(){ 
+    unsigned int width = 800, height = 600;
+    Game *brakeOut = new Game(width,height);
+
     return 0;
 }
