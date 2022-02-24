@@ -1,6 +1,7 @@
 #pragma once
 
 #include "shader.hpp"
+#include "game.hpp"
 #include <string>
 
 using namespace std;
@@ -10,17 +11,21 @@ class Brick
  private:
      /* data */
     unsigned int bickVAO;
-     unsigned int VBO, EBO;
+    unsigned int VBO, EBO;
     Shader brickShader;
     unsigned int brickTexture;
+    Game *game;
 
  public:
      Brick(/* args */);
      ~Brick();
     void initBrickRender();
     void loadFromFile();
-    void draw();
+    void draw(glm::vec2,glm::vec2);
 
-    void setShader(string &vertexPath,  string &fragmetPath );
-    void setTexture(string &path);
+    void setShader(string &,  string & );
+    void setTexture(string &);
+    
+    void setGame(Game *game) {this -> game = game;}
+     
  };
