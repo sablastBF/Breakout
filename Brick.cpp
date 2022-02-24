@@ -10,7 +10,6 @@ float k = 0.0f;
 glm::mat4 model = glm::mat4(1.0f);
 
 void Brick::draw(glm::vec2 pos,glm::vec2 siz){
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this -> brickTexture);
 
@@ -21,8 +20,9 @@ void Brick::draw(glm::vec2 pos,glm::vec2 siz){
     mo = glm::scale(mo, glm::vec3(siz, 0.0f));
 
     this -> brickShader.setMat4("model", mo);
+    cout <<"ADSAD"<<endl;
     this -> brickShader.setMat4("projection", this -> game -> getProjection());
-
+        cout <<"ADSAD"<<endl;
 
     glBindVertexArray(this -> bickVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -71,7 +71,7 @@ void Brick::setShader(string &vertexPath, string &fragmetPath){
     this -> brickShader.use();
 }   
 
-void Brick::setTexture(string &path){
+void Brick::setTexture(string &path, bool alpha){
     
 
 
@@ -89,7 +89,11 @@ void Brick::setTexture(string &path){
     
     if (data)
     {
+        if (alpha)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        else 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else

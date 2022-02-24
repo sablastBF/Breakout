@@ -24,7 +24,7 @@ class Brick
     void draw(glm::vec2,glm::vec2);
 
     void setShader(string &,  string & );
-    void setTexture(string &);
+    void setTexture(string &, bool alpfha = false);
     
     void setGame(Game *game) {this -> game = game;}
      

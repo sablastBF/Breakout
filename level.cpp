@@ -4,7 +4,7 @@
 #include "level.hpp"
 #include "tinyxml2.h"
 #include "shader.hpp"
-
+#include "paddle.hpp"
 
 
 void Level::draw(){
@@ -20,6 +20,8 @@ void Level::draw(){
             this -> brick[this -> levelBrickLayout[i][j]] -> draw(glm::vec2(i * width , j*height) ,glm::vec2(width , height));   
         }
     }
+    
+    padd -> draw();
 }
 
 void Level::loadLevelFromFile(){
@@ -51,3 +53,4 @@ void Level::setBackground(string &path){
 void Level::drawBackground(){
     this -> beckground ->draw(glm::vec2(0.0f, 0.0f), glm::vec2(this -> game -> getWidth(), this -> game -> getHeight()));
 }
+

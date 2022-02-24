@@ -2,7 +2,8 @@
 #include <vector>
 #include <map>
 #include "Brick.hpp"
-
+#include "paddle.hpp"
+#include "game.hpp"
 using namespace std;
 
 class Level
@@ -13,6 +14,7 @@ private:
     map<string, Brick *> brick;
     Game *game;
     Brick *beckground = nullptr;
+    paddle *padd = nullptr;
 
 public:
     Level(/* args */){}
@@ -23,5 +25,6 @@ public:
     void addBrick();
     void drawBackground();
     void setBackground(string &path);
+    void setPaddle(paddle *p) {this -> padd = p;}
 };
 

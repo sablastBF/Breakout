@@ -1,6 +1,5 @@
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+
 #include <iostream>
 
 #include "game.hpp"
@@ -10,10 +9,6 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 using namespace std;
-
-void initOpenGL();
-GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 
 Game::Game(unsigned int width, unsigned int height){
@@ -25,31 +20,24 @@ Game::Game(unsigned int width, unsigned int height){
     GLFWwindow* window = crateWindow( width, height);
     if (!window) return ;
 
-    // Brick *brk = new Brick();
-    // brk -> setGame(this);
-    // brk ->  initBrickRender();
-
-    // string shaderPathVS = "shaders/basic_brick.vs", shaderPathFS = "shaders/basic_brick.fs";
-    // brk -> setShader(shaderPathVS, shaderPathFS);
-    // string text = "wall.jpg";
-    // brk -> setTexture(text);
-
     Level *first= new Level(this);
     first -> loadLevelFromFile();
     first -> addBrick();
     string bacground = "background.jpg";
-    first -> setBackground(bacground, );
+    first -> setBackground(bacground);
 
+    paddle *pa = new paddle(this);
+    pa -> setupPadle();
+    first -> setPaddle(pa);
+    
     while(!glfwWindowShouldClose(window)){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        processInput(window);
+
         first -> draw();
-        // for (float x = 0.0f; x < width; x+= width/k){
-        //     for (float y = 0.0f; y <= height/2.0f; y+= height/(2.0f*k)){
-        //         brk -> draw(glm::vec2(x, y),glm::vec2(width/k,   height/(2.0f*k))); 
-        //     }   
-        // }
+      
       
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -57,8 +45,7 @@ Game::Game(unsigned int width, unsigned int height){
 }
 
 
-
-GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
+GLFWwindow*  Game::crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
    
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -83,7 +70,21 @@ GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
     return window;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void Game::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void Game::processInput(GLFWwindow *window)
+{
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+        cout <<"LEVO" << endl;
+    }
+
+     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+        cout <<"DESNO" << endl;
+    }
 }
