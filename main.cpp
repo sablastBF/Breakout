@@ -3,8 +3,8 @@
 
 
 int main(){ 
-    unsigned int width = 800, height = 600;
-    Game *brakeOut = new Game(width,height);
+    unsigned int width_ = 800, height_ = 600;
+    Game *brakeOut = new Game(width_,height_);
 
     return 0;
 }

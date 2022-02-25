@@ -1,8 +1,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include "Brick.hpp"
+#include "game.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "shader.hpp"
-#include "Brick.hpp"
 
 using namespace  std;
 
@@ -12,7 +13,6 @@ glm::mat4 model = glm::mat4(1.0f);
 void Brick::draw(glm::vec2 pos,glm::vec2 siz){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this -> brickTexture);
-
     this -> brickShader.use();
     glm::mat4 mo = model;
 
@@ -20,9 +20,9 @@ void Brick::draw(glm::vec2 pos,glm::vec2 siz){
     mo = glm::scale(mo, glm::vec3(siz, 0.0f));
 
     this -> brickShader.setMat4("model", mo);
-    cout <<"ADSAD"<<endl;
-    this -> brickShader.setMat4("projection", this -> game -> getProjection());
-        cout <<"ADSAD"<<endl;
+    this -> brickShader.setMat4("projection", 
+    glm::ortho(0.0f, static_cast<float>( 800), static_cast<float>(600), 0.0f, -1.0f, 1.0f)
+    );
 
     glBindVertexArray(this -> bickVAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -31,7 +31,7 @@ void Brick::draw(glm::vec2 pos,glm::vec2 siz){
 }
 
 void Brick::initBrickRender(){
-       float vertices[] = { 
+    float vertices[] = { 
         0.0f, 0.0f, 0.0f, 0.0f, 
         0.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 0.0f, 1.0f, 0.0f,
@@ -43,9 +43,11 @@ void Brick::initBrickRender(){
         0, 1, 3,  
         0, 2, 3  
     };
-   
+      
     glGenVertexArrays(1, &this -> bickVAO);
+
     glGenBuffers(1, &this -> VBO);
+
     glGenBuffers(1, &this -> EBO);
     glBindVertexArray(this -> bickVAO);
 
@@ -59,6 +61,7 @@ void Brick::initBrickRender(){
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
 }
 
 void Brick::loadFromFile(){
@@ -73,8 +76,6 @@ void Brick::setShader(string &vertexPath, string &fragmetPath){
 
 void Brick::setTexture(string &path, bool alpha){
     
-
-
     glGenTextures(1, &this -> brickTexture);
     glBindTexture(GL_TEXTURE_2D, this -> brickTexture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
     // set the texture wrapping parameters
@@ -86,11 +87,15 @@ void Brick::setTexture(string &path, bool alpha){
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
     unsigned char *data = stbi_load(path.c_str(),&width, &height, &nrChannels, 0);
-    
+    cout <<path<<endl;
     if (data)
     {
-        if (alpha)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        if (alpha){
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+        cout << path << endl;
+        }
         else 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
@@ -105,5 +110,5 @@ void Brick::setTexture(string &path, bool alpha){
 
 Brick::Brick(){
 
-}
+}   
 

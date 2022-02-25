@@ -11,33 +11,25 @@
 using namespace std;
 
 
-Game::Game(unsigned int width, unsigned int height){
+Game::Game(unsigned int width_, unsigned int height_){
 
-    projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);  
-    this -> width = width;
-    this -> height = height;
+    this -> width = width_;
+    this -> height = height_;
+    //this -> projection = glm::ortho(0.0f, static_cast<float>( this -> width), static_cast<float>(this -> height), 0.0f, -1.0f, 1.0f);  
 
-    GLFWwindow* window = crateWindow( width, height);
+    GLFWwindow* window = crateWindow(  this -> width, this -> height);
     if (!window) return ;
 
-    Level *first= new Level(this);
-    first -> loadLevelFromFile();
-    first -> addBrick();
-    string bacground = "background.jpg";
-    first -> setBackground(bacground);
-
-    paddle *pa = new paddle(this);
-    pa -> setupPadle();
-    first -> setPaddle(pa);
+    this -> level = new Level(width_, height_);
     
+
     while(!glfwWindowShouldClose(window)){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         processInput(window);
 
-        first -> draw();
-      
+        this -> level -> draw();
       
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -71,7 +63,7 @@ GLFWwindow*  Game::crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
 }
 
 void Game::framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
+{   
     glViewport(0, 0, width, height);
 }
 
@@ -81,10 +73,16 @@ void Game::processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-        cout <<"LEVO" << endl;
+        this -> level -> getPadle() -> updatePozition(glm::vec2(-1.0f,0.0f));
+        if (this -> level -> getBall() -> getStuck()){
+            //this -> level -> getBall() -> updatePosiztion(glm::vec2(-1.0f,0.0f));
+        }
     }
 
      if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-        cout <<"DESNO" << endl;
+        this -> level -> getPadle() -> updatePozition(glm::vec2(1.0f,0.0f));
+        if (this -> level -> getBall() -> getStuck()){
+           // this -> level -> getBall() -> updatePosiztion(glm::vec2(1.0f,0.0f));
+        }
     }
 }
