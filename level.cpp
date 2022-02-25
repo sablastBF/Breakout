@@ -10,7 +10,6 @@ void Level::draw(){
 
     this -> drawBackground();
 
-
     float width_ =  static_cast<float>(this -> width)/ static_cast<float>(this -> levelBrickLayout.size());
     float height_ = static_cast<float>(this -> height) / (2.0f*static_cast<float>(this -> levelBrickLayout[0].size()));
     float minSquare = min(width_, height_);
@@ -22,12 +21,6 @@ void Level::draw(){
             this -> brick[this -> levelBrickLayout[i][j]] -> draw(glm::vec2(i * width_ , j*width_) ,glm::vec2(width_ , width_));   
         }
     }    
-
-    ball -> draw();
-    padd -> draw();
-
-    ball -> updatePosiztion();
-
 }
 
 void Level::loadLevelFromFile(){
@@ -75,11 +68,6 @@ Level::Level(unsigned int width, unsigned int height){
     this -> setBackground(pathBackground);
     this -> addBrick();
     this -> loadLevelFromFile();
-    this -> padd = new paddle(width, height, 200, 20);
-    //this -> setPaddle(padd);
-
-    ball = new Ball(glm::vec2(100.0f, 100.0f), 10.0f, width, height);
-    
 }
 
 

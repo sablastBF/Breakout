@@ -6,7 +6,7 @@
 
 class Brick;
 
-class paddle
+class Paddle
 {
 private:
     /* data */
@@ -17,14 +17,15 @@ private:
     unsigned int width, height;
 
 public:
-    paddle(/* args */);
-    paddle(unsigned int width,unsigned int height, unsigned int sizX, unsigned int sizY);
+    Paddle(/* args */);
+    Paddle(unsigned int width,unsigned int height, unsigned int sizX, unsigned int sizY);
 
-    ~paddle();
+    ~Paddle();
     
     void updatePozition(glm::vec2 );
     void draw();
     void setupPadle();
-    
+    glm::vec2 getVelocty(){return velocty;}
+
 };
 

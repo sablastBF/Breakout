@@ -21,7 +21,8 @@ Game::Game(unsigned int width_, unsigned int height_){
     if (!window) return ;
 
     this -> level = new Level(width_, height_);
-    
+    this -> paddle = new Paddle(width_, height_, 200.0f, 20.0f);
+    this -> ball = new Ball(15.0f, width_, height_, 200.0f, 20.0f);
 
     while(!glfwWindowShouldClose(window)){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -29,7 +30,7 @@ Game::Game(unsigned int width_, unsigned int height_){
 
         processInput(window);
 
-        this -> level -> draw();
+        this -> draw();
       
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -73,16 +74,32 @@ void Game::processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-        this -> level -> getPadle() -> updatePozition(glm::vec2(-1.0f,0.0f));
-        if (this -> level -> getBall() -> getStuck()){
-            //this -> level -> getBall() -> updatePosiztion(glm::vec2(-1.0f,0.0f));
+        this -> paddle -> updatePozition(glm::vec2(-1.0f,0.0f));
+        if (this -> ball -> getStuck()){
+            this -> ball -> updatePosiztion(glm::vec2(-1.0f,0.0f), this -> paddle -> getVelocty());
         }
     }
 
-     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-        this -> level -> getPadle() -> updatePozition(glm::vec2(1.0f,0.0f));
-        if (this -> level -> getBall() -> getStuck()){
-           // this -> level -> getBall() -> updatePosiztion(glm::vec2(1.0f,0.0f));
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+        this -> paddle -> updatePozition(glm::vec2(1.0f,0.0f));
+
+        if (this -> ball -> getStuck()){
+            this -> ball -> updatePosiztion(glm::vec2(1.0f,0.0f),this -> paddle -> getVelocty());
         }
     }
+
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
+        this -> ball -> flipStuck();       
+    }
+}
+
+void Game::draw(){
+    this -> level -> draw();
+    this -> paddle -> draw();
+    this -> ball -> draw();
+    this -> ball -> updatePosiztion();
+}
+
+bool Game::CheckCollision(){
+    return false;
 }

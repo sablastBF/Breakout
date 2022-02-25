@@ -6,18 +6,18 @@
 using namespace std;
 
 
-void paddle::updatePozition(glm::vec2 vec){
+void Paddle::updatePozition(glm::vec2 vec){
     glm::vec2 newPos =  this -> positionOfPadle + vec*this -> velocty;
-    if (newPos.x>= 0 && newPos.x + this -> sizX  <=  this -> width)
+    if (newPos.x >= 0 && newPos.x + this -> sizX  <=  this -> width)
     this -> positionOfPadle += vec*this -> velocty;
 }   
 
 
-void paddle::draw(){
+void Paddle::draw(){
     paddleObect -> draw(this -> positionOfPadle, glm::vec2(200.0f, 20.0f));   
 }
 
-void paddle::setupPadle(){
+void Paddle::setupPadle(){
     this -> paddleObect = new Brick(); 
     this -> paddleObect ->  initBrickRender();
     string shaderPathVS = "shaders/basic_brick.vs", shaderPathFS = "shaders/basic_brick.fs";
@@ -28,11 +28,11 @@ void paddle::setupPadle(){
     this -> paddleObect -> setTexture(text, true);
 }
 
-paddle::paddle(){
+Paddle::Paddle(){
     this -> setupPadle();
 }
 
-paddle:: paddle(unsigned int width,unsigned int height, unsigned int sizX, unsigned int sizY){
+Paddle::Paddle(unsigned int width,unsigned int height, unsigned int sizX, unsigned int sizY){
     this -> positionOfPadle =glm::vec2(width /2.0f - sizX/2.0f, height - sizY);
     this -> width = width;
     this -> height = height;

@@ -6,7 +6,8 @@
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "level.hpp"
-
+#include "ball.hpp"
+#include "paddle.hpp"
 
 class Game
 {
@@ -15,7 +16,9 @@ private:
     glm::mat4 projection;
     unsigned int width, height;
     Level *level = nullptr;
-
+    Ball *ball;
+    Paddle *paddle;
+    
 public:
 
     Game(unsigned int width_, unsigned int height_);
@@ -28,6 +31,8 @@ public:
     unsigned int getWidth(){return width;}
     unsigned int getHeight(){return height;}
     glm::mat4 getProjection(){return projection;}
-    
+    bool CheckCollision();
+    void DoCollison();
+    void draw();
 };
 

@@ -2,12 +2,11 @@
 #include <vector>
 #include <map>
 #include "Brick.hpp"
-#include "paddle.hpp"
-#include "ball.hpp"
+
 using namespace std;
 
 class Brick;
-class paddle;
+class Paddle;
 class Ball;
 
 
@@ -19,8 +18,7 @@ private:
     map<string, Brick *> brick;
 
     Brick *beckground = nullptr;
-    paddle *padd = nullptr;
-    Ball *ball = nullptr;
+
     unsigned int width; 
     unsigned int height;
     
@@ -34,8 +32,6 @@ public:
     void addBrick();
     void drawBackground();
     void setBackground(string &path);
-    void setPaddle(paddle *p) {this -> padd = p;}
-    paddle * getPadle() {return padd;}
-    Ball *getBall(){return ball;}
+    
 };
 

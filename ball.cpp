@@ -5,9 +5,9 @@ Ball::Ball(){
 
 }
 
-Ball::Ball(glm::vec2 position,float radius, unsigned int width, unsigned int height){
+Ball::Ball(float radius, unsigned int width, unsigned int height,unsigned int sizeX, unsigned int sizeY ){
     this -> radisu = radius;
-    this -> pos = position;
+    this -> pos = glm::vec2(width/2.0f + radisu/2.0f, height - sizeY - radisu);
     this -> width = width;
     this -> height = height;
     
@@ -16,7 +16,7 @@ Ball::Ball(glm::vec2 position,float radius, unsigned int width, unsigned int hei
 
 void Ball::setUpBall(){
     this -> ballObject = new Brick();
-
+    
     this -> ballObject ->  initBrickRender();
 
     string shaderPathVS = "shaders/basic_brick.vs", shaderPathFS = "shaders/basic_brick.fs";
@@ -33,6 +33,8 @@ void Ball::draw(){
 }
 
 void Ball::updatePosiztion(){
+    if (this ->stuck) return ;
+
     glm::vec2 newPos = this -> pos + this -> velocty;
     if (newPos.x < 0.0f || newPos.x + this -> radisu > this -> width) {
         this -> velocty.x = -this -> velocty.x;
@@ -42,5 +44,10 @@ void Ball::updatePosiztion(){
         this -> velocty.y = -this -> velocty.y;
         return ;
     }
+
     this -> pos = newPos;
+}
+
+void Ball::updatePosiztion(glm::vec2 vector, glm::vec2 velocity){
+    this -> pos += vector*velocity;
 }

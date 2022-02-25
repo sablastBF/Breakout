@@ -15,9 +15,13 @@ class Brick
     unsigned int VBO, EBO;
     Shader brickShader;
     unsigned int brickTexture;
+    bool distroid = false;
+    unsigned int posX, posY, sizeX, sizeY;
 
  public:
     Brick(/* args */);
+    Brick(  unsigned int posX, unsigned int posY, unsigned int sizeX,  unsigned int sizeY);
+
     ~Brick();
     void initBrickRender();
     void loadFromFile();
