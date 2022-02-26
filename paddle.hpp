@@ -1,31 +1,16 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "glm/gtc/matrix_transform.hpp"
-#include "Brick.hpp"
+#include "GameObject.hpp"
 
-class Brick;
 
-class Paddle
+class Paddle: public GameObject
 {
+  using GameObject::GameObject;
 private:
-    /* data */
-    glm::vec2 positionOfPadle;
-    glm::vec2 velocty = glm::vec2(10.0f, 0.0f);
-    Brick *paddleObect = nullptr;
-    unsigned int sizX, sizY;
-    unsigned int width, height;
-
+    glm::vec2 velocity = glm::vec2(5.0f);
 public:
-    Paddle(/* args */);
-    Paddle(unsigned int width,unsigned int height, unsigned int sizX, unsigned int sizY);
+    Paddle(glm::vec2 siz,string &texture, Renderer *);
+    ~Paddle(){};
 
-    ~Paddle();
-    
-    void updatePozition(glm::vec2 );
-    void draw();
-    void setupPadle();
-    glm::vec2 getVelocty(){return velocty;}
-
+    void updatePos(glm::vec2);
 };
 
