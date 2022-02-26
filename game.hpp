@@ -8,6 +8,8 @@
 #include "level.hpp"
 #include "ball.hpp"
 #include "paddle.hpp"
+#include "Rendere.hpp"
+#include "BackGround.hpp"
 
 class Game
 {
@@ -18,6 +20,8 @@ private:
     Level *level = nullptr;
     Ball *ball;
     Paddle *paddle;
+    Renderer *render;
+    BackGround *background;
     
 public:
 

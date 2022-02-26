@@ -13,9 +13,6 @@ void Renderer::draw(glm::vec2 pos,glm::vec2 siz,  unsigned int textureID){
     this -> brickShader.use();
     glm::mat4 mo = model;
 
-    mo = glm::translate(mo, glm::vec3(pos, 0.0f));
-    mo = glm::scale(mo, glm::vec3(siz, 0.0f));
-
     this -> brickShader.setMat4("model", glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(pos, 0.0f)), glm::vec3(siz, 0.0f)));
     this -> brickShader.setMat4("projection", this -> projection);
 
@@ -65,12 +62,29 @@ void Renderer::setShader(string &vertexPath, string &fragmetPath){
     this -> brickShader.use();
 }   
 
+
+
 Renderer::Renderer(unsigned int width, unsigned int height){
+    this -> width = width;
+    this -> height = height;
+
+    this -> initRender();
+    string shaderPathVertex = "shaders/basic_brick.vs",shaderPathFragment =  "shaders/basic_brick.fs";
+    this -> setShader(shaderPathVertex, shaderPathFragment);
     this -> projection = glm::ortho(0.0f, static_cast<float>( width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
 }
 
+unsigned int Renderer::getHeight(){
+    return this -> height;
+}
 
-Renderer::Renderer(){
-    this -> initRender();
-}   
+
+unsigned int Renderer::getWidth(){
+    return this -> width;
+}
+
+// void Renderer::setSize(unsigned int width,unsigned int height ){
+//     this -> width = width;
+//     this -> height = height;
+// }
 

@@ -14,9 +14,9 @@ class Renderer
     unsigned int VBO, EBO;
     Shader brickShader;
     glm::mat4 model = glm::mat4(1.0f), projection;
+    unsigned int width, height;
 
  public:
-    Renderer(/* args */);
     Renderer(unsigned int width, unsigned int height);
 
     ~Renderer();
@@ -25,4 +25,9 @@ class Renderer
 
     void setShader(string &,  string & );
     void setTexture(string &, bool alpfha = false);
+    void setProjectionMatrix(unsigned int width,unsigned int hegiht );
+    //void setSize(unsigned int width,unsigned int height );
+
+    unsigned int getWidth();
+    unsigned int getHeight();
  };
