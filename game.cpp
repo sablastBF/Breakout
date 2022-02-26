@@ -1,16 +1,7 @@
 
 
-#include <iostream>
 
 #include "game.hpp"
-#include "level.hpp"
-#include "Rendere.hpp"
-#include "ball.hpp"
-
-#include "glm/gtc/matrix_transform.hpp"
-
-using namespace std;
-
 
 Game::Game(unsigned int width_, unsigned int height_){
 
@@ -33,7 +24,7 @@ Game::Game(unsigned int width_, unsigned int height_){
     this -> background = new BackGround(texturePath1, this -> render);
 
     string texturePath2 = "ball.png";
-    this -> ball = new Ball(10.0f, texturePath2, this -> render);
+    this -> ball = new Ball(50.0f, texturePath2, this -> render);
 
     while(!glfwWindowShouldClose(window)){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -42,10 +33,36 @@ Game::Game(unsigned int width_, unsigned int height_){
         processInput(window);
 
         this -> draw();
+        this -> updatePos();
       
         glfwSwapBuffers(window);
         glfwPollEvents();
     }   
+}
+
+
+void Game::processInput(GLFWwindow *window)
+{
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+        this -> paddle -> updatePos(glm::vec2(-1.0f,0.0f));
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+        this -> paddle -> updatePos(glm::vec2(1.0f,0.0f));
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
+    }
+}
+
+void Game::draw(){
+    this -> background -> draw();
+    this -> level -> draw();
+    this -> paddle -> draw();
+    this -> ball -> draw();
 }
 
 
@@ -79,30 +96,6 @@ void Game::framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void Game::processInput(GLFWwindow *window)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-        this -> paddle -> updatePos(glm::vec2(-1.0f,0.0f));
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-        this -> paddle -> updatePos(glm::vec2(1.0f,0.0f));
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
-    }
-}
-
-void Game::draw(){
-    this -> background -> draw();
-    this -> level -> draw();
-    this -> paddle -> draw();
-    this -> ball -> draw();
-}
-
-bool Game::CheckCollision(){
-    return false;
+void  Game::updatePos(){
+    this -> ball -> updatePos();
 }

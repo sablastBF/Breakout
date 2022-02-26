@@ -11,7 +11,7 @@ void Level::draw(){
 }
 
 void Level::loadLevelFromFile(){
-    int n = 100, m = 10;
+    int n = 15, m = 3;
    
     float width_ =  static_cast<float>(this -> rendere -> getWidth())/ static_cast<float>(n);
     float height_ = static_cast<float>(this -> rendere -> getHeight()) / (2.0f*static_cast<float>(m));

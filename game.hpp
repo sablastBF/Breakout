@@ -31,12 +31,7 @@ public:
     static void framebuffer_size_callback(GLFWwindow* window, int width_, int height_);
     void processInput(GLFWwindow *window);
     GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
-    
-    unsigned int getWidth(){return width;}
-    unsigned int getHeight(){return height;}
-    glm::mat4 getProjection(){return projection;}
-    bool CheckCollision();
-    void DoCollison();
     void draw();
+    void updatePos();
 };
 

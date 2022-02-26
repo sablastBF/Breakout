@@ -6,9 +6,11 @@ class GameObject
 protected:
     /* data */
     glm::vec2 pos, siz;
+    Renderer *render;
+    
 private:
     unsigned int textureID;
-    Renderer *render;
+
 public:
     GameObject();
     GameObject(string &textureID, Renderer *render);
