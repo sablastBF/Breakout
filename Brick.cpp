@@ -6,3 +6,10 @@ void Brick::draw(){
     GameObject::draw();
 }
 
+void Brick::setDistroid(){
+    this -> destroid = true;
+}
+
+bool Brick::getDestroid(){
+    return this -> destroid;
+}

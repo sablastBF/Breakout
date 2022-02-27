@@ -14,6 +14,12 @@ GameObject::GameObject(string &texturePath, Renderer *render){
     this -> render = render;
 }
 
+GameObject::GameObject( glm::vec2 siz, string &texturePath, Renderer *render){
+    this -> siz = siz;
+    this -> loadTexture(texturePath);
+    this -> render = render;
+}
+
 
 GameObject::GameObject(glm::vec2 pos, glm::vec2 siz, string &texturePath, Renderer *render){
     this -> pos = pos;
@@ -48,15 +54,13 @@ void GameObject::loadTexture(string &path){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     int width, height, nrChannels;
     unsigned char *data = stbi_load(path.c_str(),&width, &height, &nrChannels, 0);
+
     if (data)
     {
-        // if (alpha){
-
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-        // cout << path << endl;
-        // }
-        // else 
+        if (path.substr(path.find_last_of(".") + 1) == "png"){
+            glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        }
+        else 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -69,4 +73,6 @@ void GameObject::loadTexture(string &path){
     stbi_image_free(data);
 }
 
+glm::vec2 GameObject::getPos() {return this -> pos;}
+glm::vec2 GameObject::getSiz() {return this -> siz;}
 

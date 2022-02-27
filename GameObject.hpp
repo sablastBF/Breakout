@@ -9,11 +9,12 @@ protected:
     Renderer *render;
     
 private:
-    unsigned int textureID;
+    GLuint textureID;
 
 public:
     GameObject();
     GameObject(string &textureID, Renderer *render);
+    GameObject( glm::vec2 siz, string &textureID, Renderer *render);
     GameObject(glm::vec2 pos, glm::vec2 siz, string &textureID, Renderer *render);
     GameObject(GameObject*);
     ~GameObject(){};
@@ -21,5 +22,7 @@ public:
     void loadTexture(string &path);
     void setPos(glm::vec2);
     void setSiz(glm::vec2);
+    glm::vec2 getPos();
+    glm::vec2 getSiz();
 };
 

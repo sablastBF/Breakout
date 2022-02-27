@@ -10,8 +10,8 @@ void Renderer::draw(glm::vec2 pos,glm::vec2 siz,  unsigned int textureID){
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID);
+
     this -> brickShader.use();
-    glm::mat4 mo = model;
 
     this -> brickShader.setMat4("model", glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(pos, 0.0f)), glm::vec3(siz, 0.0f)));
     this -> brickShader.setMat4("projection", this -> projection);
@@ -53,7 +53,6 @@ void Renderer::initRender(){
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
-
 }
 
 

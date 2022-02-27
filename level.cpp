@@ -11,7 +11,7 @@ void Level::draw(){
 }
 
 void Level::loadLevelFromFile(){
-    int n = 15, m = 3;
+    int n = 20, m = 3;
    
     float width_ =  static_cast<float>(this -> rendere -> getWidth())/ static_cast<float>(n);
     float height_ = static_cast<float>(this -> rendere -> getHeight()) / (2.0f*static_cast<float>(m));
@@ -29,7 +29,7 @@ void Level::loadLevelFromFile(){
 }
 
 void Level::addBrick(){
-    string txt = "block.png";
+    string txt = "block.jpg";
     Brick *brk = new Brick(txt, this -> rendere);
     this -> brick["1"] = brk;
 }
@@ -38,4 +38,8 @@ Level::Level(Renderer *rendere){
     this -> rendere = rendere;
     this -> addBrick();
     this -> loadLevelFromFile();
+}
+
+vector<Brick *> &  Level::getBricks(){
+    return this -> levelBrickLayout;
 }

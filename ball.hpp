@@ -5,7 +5,7 @@ class Ball: public GameObject{
     using GameObject::GameObject;
 
     private:
-        glm::vec2 velocty = glm::vec2(-5.0f, -5.0f);
+        glm::vec2 velocty = glm::vec2(0.0f, -10.0f);
         float radius;
         bool stuck = true;
 
@@ -13,5 +13,13 @@ class Ball: public GameObject{
 
     Ball(float radius, string &text, Renderer *r);
     void updatePos();
+    void flipStuck();
+    bool getStuck();
+    float getRadius();
+    void changeVelocity();
+    void changeVelocityY();
+    void changeVelocityX();
+    void setVelocrty(glm::vec2 velocty);
+    glm::vec2 getVelocrty();
 
 };

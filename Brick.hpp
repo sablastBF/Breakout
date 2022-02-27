@@ -15,4 +15,7 @@ class Brick : public GameObject
 
  public:
       void draw();
+      void setDistroid();
+      bool getDestroid();
+
  };

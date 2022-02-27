@@ -33,5 +33,8 @@ public:
     GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
     void draw();
     void updatePos();
+    void setBallPositionStuck();
+    bool CheckCollision(Ball *one, GameObject *two);
+    bool CheckCollision(GameObject *one, GameObject *two); 
 };
 

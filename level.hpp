@@ -17,6 +17,7 @@ public:
     ~Level();
     void draw();
     void loadLevelFromFile();
-    void addBrick();    
+    void addBrick();   
+    vector<Brick *> & getBricks(); 
 };
 

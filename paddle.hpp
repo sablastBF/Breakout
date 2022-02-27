@@ -11,6 +11,6 @@ public:
     Paddle(glm::vec2 siz,string &texture, Renderer *);
     ~Paddle(){};
 
-    void updatePos(glm::vec2);
+    bool updatePos(glm::vec2);
 };
 
