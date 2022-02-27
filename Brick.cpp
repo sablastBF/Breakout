@@ -5,3 +5,4 @@ void Brick::draw(){
     if (this -> destroid) return ;
     GameObject::draw();
 }
+
