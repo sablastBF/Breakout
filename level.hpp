@@ -2,7 +2,7 @@
 #include <vector>
 #include <map>
 #include "Brick.hpp"
-
+#include "tinyxml2.h"
 
 class Level
 {
@@ -11,13 +11,13 @@ private:
     map<string, Brick *> brick;
     Renderer *rendere;
     vector<Brick *> levelBrickLayout;
-
+    GameObject *background;
 public:
-    Level(Renderer *rendere);
+    Level(string path, Renderer *rendere);
     ~Level();
     void draw();
-    void loadLevelFromFile();
-    void addBrick();   
+    void loadLevelFromFile(string path);
+    void addBrick( tinyxml2::XMLElement *);   
     vector<Brick *> & getBricks(); 
 };
 

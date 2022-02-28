@@ -9,7 +9,6 @@
 #include "ball.hpp"
 #include "paddle.hpp"
 #include "Rendere.hpp"
-#include "BackGround.hpp"
 
 class Game
 {
@@ -21,7 +20,7 @@ private:
     Ball *ball;
     Paddle *paddle;
     Renderer *render;
-    BackGround *background;
+    unsigned int gameScore;
     
 public:
 
@@ -29,10 +28,10 @@ public:
     ~Game();
 
     static void framebuffer_size_callback(GLFWwindow* window, int width_, int height_);
-    void processInput(GLFWwindow *window);
+    void processInput(GLFWwindow *window, float dt);
     GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
     void draw();
-    void updatePos();
+    void updatePos(float dt);
     void setBallPositionStuck();
     bool CheckCollision(Ball *one, GameObject *two);
     bool CheckCollision(GameObject *one, GameObject *two); 

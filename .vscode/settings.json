@@ -4,6 +4,10 @@
         "string": "cpp",
         "random": "cpp",
         "ostream": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "memory": "cpp",
+        "istream": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp"
     }
 }

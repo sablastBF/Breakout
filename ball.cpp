@@ -5,20 +5,15 @@ Ball::Ball(float radius, string &text, Renderer *r): GameObject(glm::vec2(2.0f*r
     this -> radius = radius;
 }
 
-void Ball::updatePos(){
+void Ball::updatePos(float dt){
     if (this -> stuck) return ;
-    
-    glm::vec2 newPos = this -> pos + this -> velocty;
-    if (newPos.x < 0.0f || newPos.x + this -> radius > this -> render -> getWidth()){
+    glm::vec2 newPos = this -> pos + this -> velocty * dt;
+    if (newPos.x < 0.0f || newPos.x + this -> radius*2.0f > this -> render -> getWidth()){
         this -> velocty.x = -this -> velocty.x ;
-        Ball::updatePos();
     }     
 
-    if (newPos.y < 0.0f 
-    //|| newPos.y + this -> radius > this -> render -> getHeight() 
-    ){
+    if (newPos.y < 0.0f || newPos.y + this -> radius*2.0f > this -> render -> getHeight()){
         this -> velocty.y = -this -> velocty.y ;
-        Ball::updatePos();
     }       
 
     this -> pos = newPos;

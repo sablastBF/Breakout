@@ -1,0 +1,68 @@
+<Level
+	RowCount="21"
+	ColumnCount="23"
+	RowSpacing="3"
+	ColumnSpacing="3"
+	BackgroundTexture="boards\background1.png">
+
+  <BrickTypes>
+
+    <!-- Soft Brick -->
+    <BrickType
+			Id="S"
+			Texture="block.jpg"
+			HitPoints="10"
+			BreakSound="paperBreak.wav"
+			BreakScore="50" />
+
+    <!-- Medium Brick -->
+    <BrickType
+			Id="M"
+			Texture="bricks/wood.png"
+			HitPoints="10"
+			HitSound="woodHit.wav"
+			BreakSound="woodBreak.wav"
+			BreakScore="100" />
+
+    <!-- Hard Brick -->
+    <BrickType
+			Id="H"
+			Texture="block.jpg"
+			HitPoints="30"
+			HitSound="brickHit.wav"
+			BreakSound="brickBreak.wav"
+			BreakScore="150" />
+
+    <!-- Impenetrable Brick -->
+    <!-- <BrickType
+			Id="I"
+			Texture="bricks\metal.png"
+			HitPoints="Infinite"
+			HitSound="metalHit.wav" /> -->
+
+  </BrickTypes>
+
+  <Bricks>
+    _ H _ H _ H _ H _ H _ H _ H _ H _ H _ H _ H _
+    _ _ H _ H _ H _ H _ H _ H _ H _ H _ H _ H _ _
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _
+    _ _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ _
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _
+    _ _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ _
+    _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _
+    _ _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _ _
+    _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _
+    _ _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _ _
+    _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _
+    _ _ S _ S _ S _ S _ S _ S _ S _ S _ S _ S _ _
+    _ _ _ S _ S _ S _ S _ _ _ S _ S _ S _ S _ _ _
+    _ _ _ _ S _ S _ S _ _ _ _ _ S _ S _ S _ _ _ _
+    _ _ _ _ _ S _ S _ _ _ _ _ _ _ S _ S _ _ _ _ _
+    _ _ _ _ _ _ S _ _ _ _ S _ _ _ _ S _ _ _ _ _ _
+    _ _ _ _ _ _ _ S _ _ _ _ _ _ _ S _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _ S _ _ _ _ _ S _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _ _ S _ _ _ S _ _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _ _ _ S _ S _ _ _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _ _ _ _ S _ _ _ _ _ _ _ _ _ _ _
+  </Bricks>
+</Level>
