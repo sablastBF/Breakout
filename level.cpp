@@ -17,7 +17,6 @@ void Level::loadLevelFromFile(string path){
     unsigned int spacC = 20, rowC = 20;
 
     string pathBackground;
-    cout << path << endl;
     XMLDocument levelXml;
     levelXml.LoadFile(path.c_str());
 
@@ -72,8 +71,6 @@ void Level::loadLevelFromFile(string path){
            this -> levelBrickLayout.push_back(br);
         }
     } 
-    cout << k <<" "<< n * m << endl;
-
 }
 
 void Level::addBrick( XMLElement * brick){
@@ -87,10 +84,12 @@ void Level::addBrick( XMLElement * brick){
     brick->FindAttribute("BreakScore")->QueryUnsignedValue(&breakScore);
 
     string txt = "block.jpg";
-    cout << texturePath<<endl;
-    Brick *brk = new Brick(texturePath, this -> rendere);
-    brk -> setBrickParameters(breakScore, hitPoints);
-    cout << hitPoints << endl;
+    Brick *brk = new Brick(txt, this -> rendere);
+    brk -> setHit(hitPoints);
+    brk -> setBreakScore(breakScore);
+    brk -> setBreakSound(soundPath);
+    brk -> setHitSound(soundPath);
+
     this -> brick[id] = brk;
 }
 

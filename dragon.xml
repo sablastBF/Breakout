@@ -11,26 +11,26 @@
     <BrickType
 			Id="S"
 			Texture="block.jpg"
-			HitPoints="10"
-			BreakSound="paperBreak.wav"
+			HitPoints="1"
+			BreakSound="Heart.wav"
 			BreakScore="50" />
 
     <!-- Medium Brick -->
     <BrickType
 			Id="M"
 			Texture="bricks/wood.png"
-			HitPoints="10"
-			HitSound="woodHit.wav"
-			BreakSound="woodBreak.wav"
+			HitPoints="2"
+			HitSound="Meseg.wav"
+			BreakSound="Heart.wav"
 			BreakScore="100" />
 
     <!-- Hard Brick -->
     <BrickType
 			Id="H"
 			Texture="block.jpg"
-			HitPoints="30"
-			HitSound="brickHit.wav"
-			BreakSound="brickBreak.wav"
+			HitPoints="3"
+			HitSound="Meseg.wav"
+			BreakSound="Heart.wav"
 			BreakScore="150" />
 
     <!-- Impenetrable Brick -->

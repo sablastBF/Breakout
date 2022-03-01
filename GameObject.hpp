@@ -7,8 +7,6 @@ protected:
     /* data */
     glm::vec2 pos, siz;
     Renderer *render;
-    
-private:
     GLuint textureID;
 
 public:

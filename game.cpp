@@ -3,6 +3,8 @@
 
 #include "game.hpp"
 
+using namespace irrklang;
+
 Game::Game(unsigned int width_, unsigned int height_){
 
     this -> width = width_;
@@ -35,6 +37,9 @@ Game::Game(unsigned int width_, unsigned int height_){
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
+
+    SoundEngine = createIrrKlangDevice();
+    SoundEngine->play2D("ForestBSB.wav", true);
 
     while(!glfwWindowShouldClose(window)){
         float currentFrame = glfwGetTime();
@@ -149,7 +154,11 @@ void  Game::updatePos(float dt){
         if (this -> CheckCollision(this -> ball, brks[i])){
             if (brks[i] -> getUndestrojable() == false && brks[i] -> chechHit() ){
                 this -> gameScore += brks[i] -> getBreakScore();
+                cout << this -> gameScore<< endl;
                 brks[i] -> setDistroid();
+                brks[i] -> playBreakSound(SoundEngine);
+            } else {
+                brks[i] -> playHitSound(SoundEngine);
             }
             break;
         }

@@ -3,6 +3,7 @@
 #include <map>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <irrklang/irrKlang.h>
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "level.hpp"
@@ -21,7 +22,7 @@ private:
     Paddle *paddle;
     Renderer *render;
     unsigned int gameScore;
-    
+    ISoundEngine *SoundEngine;
 public:
 
     Game(unsigned int width_, unsigned int height_);

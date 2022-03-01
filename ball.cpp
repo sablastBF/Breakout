@@ -13,8 +13,10 @@ void Ball::updatePos(float dt){
     }     
 
     if (newPos.y < 0.0f || newPos.y + this -> radius*2.0f > this -> render -> getHeight()){
-        this -> velocty.y = -this -> velocty.y ;
+        this -> velocty.y = -this -> velocty.y;
+        
     }       
+    newPos = glm::clamp(newPos, glm::vec2(0.0f), glm::vec2( this -> render -> getWidth(),  this -> render -> getHeight()));
 
     this -> pos = newPos;
 }

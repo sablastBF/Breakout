@@ -1,18 +1,20 @@
 #pragma once
 
 #include "GameObject.hpp"
+#include <irrklang/irrKlang.h>
+using namespace irrklang;
 
 class Brick : public GameObject
 {
   using GameObject::GameObject;
 
- private:
+  private:
      /* data */
-     int hitPoint = 0, breakScore = 0;
+     unsigned int hitPoint = 0, breakScore = 1;
      bool destroid = false, undestrojable = false;
-     //string sound;
+     string breakSound, hitSound;
     
- public:
+  public:
       Brick(Brick *);
 
       void draw();
@@ -21,6 +23,10 @@ class Brick : public GameObject
       bool getUndestrojable();
       unsigned int getBreakScore();
       bool chechHit();
-      void setBrickParameters(unsigned int breakScore, unsigned int hitPoints);
-
+      void setHit(unsigned int hit){this -> hitPoint = hit;}
+      void setBreakScore(unsigned int breakScore){this -> breakScore = breakScore;}
+      void setBreakSound(string bs){this -> breakSound = bs;}
+      void setHitSound(string hs){this -> hitSound = hs;}
+      void playHitSound(ISoundEngine *SoundEngine);
+      void playBreakSound(ISoundEngine *SoundEngine);
  };
