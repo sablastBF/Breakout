@@ -3,7 +3,7 @@
 	ColumnCount="23"
 	RowSpacing="3"
 	ColumnSpacing="3"
-	BackgroundTexture="textures/background/background.jpg">
+	BackgroundTexture="textures/background/math_notebook.jpg">
 
   <BrickTypes>
 

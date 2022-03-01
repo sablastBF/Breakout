@@ -60,9 +60,9 @@ void Level::loadLevelFromFile(string path){
     this -> background = new GameObject(glm::vec2(0.0f), glm::vec2(this -> rendere -> getWidth(), this -> rendere -> getHeight() ),pathBackground, this -> rendere);
 
     float width_ =  static_cast<float>(this -> rendere -> getWidth())/ static_cast<float>(n);
-    float height_ = static_cast<float>(this -> rendere -> getHeight()) / (static_cast<float>(m));
+    float height_ = static_cast<float>(2.0f/3.0f*this -> rendere -> getHeight()) / (static_cast<float>(m));
     float minSquare = min(width_, height_);
-    minSquare = minSquare * 0.8;
+    minSquare = minSquare;
 
 // dodajemo vrste brkova
     XMLElement * brickS = levelData -> FirstChildElement("BrickTypes");
@@ -97,8 +97,8 @@ void Level::loadLevelFromFile(string path){
         for (float j = 0; j < n; j++){
            if (this -> brick.find(v[k]) == this -> brick.end()) {k++;continue;}
            Brick *br = new Brick(this -> brick[v[k++]]);
-           br -> setPos(glm::vec2(offset+ minSquare * j + rowC, minSquare * i + spacC));
-           br -> setSiz(glm::vec2(minSquare-  rowC, minSquare - spacC));
+           br -> setPos(glm::vec2( width_ * j + rowC, height_ * i + spacC));
+           br -> setSiz(glm::vec2(width_-  rowC, height_ - spacC));
            this -> levelBrickLayout.push_back(br);
         }
     } 

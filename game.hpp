@@ -26,7 +26,7 @@ private:
 public:
 
     Game(unsigned int width_, unsigned int height_);
-    ~Game();
+    ~Game(){SoundEngine -> drop();}
 
     static void framebuffer_size_callback(GLFWwindow* window, int width_, int height_);
     void processInput(GLFWwindow *window, float dt);
