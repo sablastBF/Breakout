@@ -66,8 +66,8 @@ void Level::loadLevelFromFile(string path){
         for (float j = 0; j < n; j++){
            if (this -> brick.find(v[k]) == this -> brick.end()) {k++;continue;}
            Brick *br = new Brick(this -> brick[v[k++]]);
-           br -> setPos(glm::vec2(width_ * j, height_ * i ));
-           br -> setSiz(glm::vec2(width_, height_));
+           br -> setPos(glm::vec2(width_ * j + rowC, height_ * i + spacC));
+           br -> setSiz(glm::vec2(width_-  rowC, height_ - spacC));
            this -> levelBrickLayout.push_back(br);
         }
     } 

@@ -14,14 +14,14 @@ Game::Game(unsigned int width_, unsigned int height_){
     GLFWwindow* window = crateWindow( this -> width, this -> height);
     if (!window) return ;
   
-
-
     this  -> render = new Renderer( this -> width, this -> height);
     // string path = "ball.png";
     // Brick *br = new Brick(glm::vec2(20.0f), glm::vec2(100.0f), path, this -> render);
-    string levelPath = "dragon.xml";
-    this -> level = new Level("dragon.xml",  this -> render);
+    string levelPath = "levels/dragon.xml";
+        cout<<"tude"<<endl;
 
+    this -> level = new Level(levelPath,  this -> render);
+    cout<<"tude"<<endl;
     glm::vec2 paddleSize = glm::vec2(200.0f, 20.0f);
     string texturePath = "padle.jpg";
     this -> paddle = new Paddle(paddleSize, texturePath, this  -> render);

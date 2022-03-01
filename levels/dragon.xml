@@ -3,14 +3,14 @@
 	ColumnCount="23"
 	RowSpacing="3"
 	ColumnSpacing="3"
-	BackgroundTexture="boards\background1.png">
+	BackgroundTexture="textures/background/math_notebook.jpeg">
 
   <BrickTypes>
 
     <!-- Soft Brick -->
     <BrickType
 			Id="S"
-			Texture="block.jpg"
+			Texture="textures/brick/brick.jpg"
 			HitPoints="1"
 			BreakSound="Heart.wav"
 			BreakScore="50" />
@@ -18,7 +18,7 @@
     <!-- Medium Brick -->
     <BrickType
 			Id="M"
-			Texture="bricks/wood.png"
+			Texture="textures/brick/brick"
 			HitPoints="2"
 			HitSound="Meseg.wav"
 			BreakSound="Heart.wav"
@@ -27,7 +27,7 @@
     <!-- Hard Brick -->
     <BrickType
 			Id="H"
-			Texture="block.jpg"
+			Texture="textures/brick/brick"
 			HitPoints="3"
 			HitSound="Meseg.wav"
 			BreakSound="Heart.wav"
