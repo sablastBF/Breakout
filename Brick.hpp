@@ -20,7 +20,8 @@ class Brick : public GameObject
       void draw();
       void setDistroid();
       bool getDestroid();
-      bool getUndestrojable();
+      bool getUndestrojable(){return this -> undestrojable;}
+      void setUndestrojable(bool state){this -> undestrojable = state;}
       unsigned int getBreakScore();
       bool chechHit();
       void setHit(unsigned int hit){this -> hitPoint = hit;}

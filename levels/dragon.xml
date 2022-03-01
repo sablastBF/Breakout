@@ -3,42 +3,42 @@
 	ColumnCount="23"
 	RowSpacing="3"
 	ColumnSpacing="3"
-	BackgroundTexture="textures/background/math_notebook.jpeg">
+	BackgroundTexture="textures/background/background.jpg">
 
   <BrickTypes>
 
     <!-- Soft Brick -->
     <BrickType
-			Id="S"
-			Texture="textures/brick/brick.jpg"
+			Id="I"
+			Texture="textures/brick/block.jpg"
 			HitPoints="1"
-			BreakSound="Heart.wav"
+			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="50" />
 
     <!-- Medium Brick -->
     <BrickType
 			Id="M"
-			Texture="textures/brick/brick"
+			Texture="textures/brick/block.jpg"
 			HitPoints="2"
-			HitSound="Meseg.wav"
-			BreakSound="Heart.wav"
+			HitSound="audio/bricks/Meseg.wav"
+			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="100" />
 
     <!-- Hard Brick -->
     <BrickType
 			Id="H"
-			Texture="textures/brick/brick"
+			Texture="textures/brick/block.jpg"
 			HitPoints="3"
-			HitSound="Meseg.wav"
-			BreakSound="Heart.wav"
+			HitSound="audio/bricks/Meseg.wav"
+			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="150" />
 
     <!-- Impenetrable Brick -->
-    <!-- <BrickType
-			Id="I"
-			Texture="bricks\metal.png"
+    <BrickType
+			Id="S"
+			Texture="textures/brick/block.jpg"
 			HitPoints="Infinite"
-			HitSound="metalHit.wav" /> -->
+			HitSound="audio/bricks/metal3.wav" />
 
   </BrickTypes>
 

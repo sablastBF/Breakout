@@ -13,10 +13,6 @@ bool Brick::getDestroid(){
     return this -> destroid;
 }
 
-bool Brick::getUndestrojable(){
-    return this -> undestrojable;
-}
-
 unsigned int Brick::getBreakScore(){
     return this -> breakScore;
 }
@@ -38,12 +34,9 @@ Brick::Brick(Brick *b){
 
 
 void Brick::playHitSound(ISoundEngine *SoundEngine){
-    cout << this -> hitSound << endl;
     SoundEngine->play2D(this -> hitSound.c_str(), false);
 
 }
 void Brick::playBreakSound(ISoundEngine *SoundEngine){
-    cout << this -> breakSound << endl;
     SoundEngine->play2D(this -> breakSound.c_str(), false);
-
 }   

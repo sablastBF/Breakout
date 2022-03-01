@@ -18,19 +18,17 @@ Game::Game(unsigned int width_, unsigned int height_){
     // string path = "ball.png";
     // Brick *br = new Brick(glm::vec2(20.0f), glm::vec2(100.0f), path, this -> render);
     string levelPath = "levels/dragon.xml";
-        cout<<"tude"<<endl;
 
     this -> level = new Level(levelPath,  this -> render);
-    cout<<"tude"<<endl;
     glm::vec2 paddleSize = glm::vec2(200.0f, 20.0f);
-    string texturePath = "padle.jpg";
+    string texturePath = "textures/paddle/padle.jpg";
     this -> paddle = new Paddle(paddleSize, texturePath, this  -> render);
     
     // string texturePath1 = "background.jpg";
     // this -> background = new BackGround(texturePath1, this -> render);
 
 
-    string texturePath2 = "awesomeface.png";
+    string texturePath2 = "textures/ball/awesomeface.png";
     this -> ball = new Ball(10.0f,texturePath2, this -> render);
     this -> setBallPositionStuck();
  
@@ -39,7 +37,7 @@ Game::Game(unsigned int width_, unsigned int height_){
     float lastFrame = 0.0f;
 
     SoundEngine = createIrrKlangDevice();
-    SoundEngine->play2D("ForestBSB.wav", true);
+    SoundEngine->play2D("audio/background/ForestBSB.wav", true);
 
     while(!glfwWindowShouldClose(window)){
         float currentFrame = glfwGetTime();

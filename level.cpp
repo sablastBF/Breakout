@@ -21,20 +21,48 @@ void Level::loadLevelFromFile(string path){
     levelXml.LoadFile(path.c_str());
 
     tinyxml2::XMLElement* levelData = levelXml.FirstChild()->ToElement();
-    levelData->FindAttribute("RowCount")->QueryUnsignedValue(&m);
-    levelData->FindAttribute("ColumnCount")->QueryUnsignedValue(&n);
-    levelData->FindAttribute("RowSpacing")->QueryUnsignedValue(&rowC);
 
-    levelData->FindAttribute("ColumnSpacing")->QueryUnsignedValue(&spacC);
-    pathBackground = levelData->FindAttribute("BackgroundTexture")->Value();
+    if (levelData->FindAttribute("RowCount")){
+        levelData->FindAttribute("RowCount")->QueryUnsignedValue(&m);
+    } else {
+        m = 20;
+        cout <<"RowCount Not Found set to default value."<<endl;
+    }
 
+    if (levelData->FindAttribute("ColumnCount")){
+        levelData->FindAttribute("ColumnCount")->QueryUnsignedValue(&n);
+    } else {
+        n = 20;
+        cout <<"ColumnCount Not Found set to default value."<<endl;
+    }
+
+
+    if (levelData->FindAttribute("RowSpacing")){
+        levelData->FindAttribute("RowSpacing")->QueryUnsignedValue(&rowC);
+    } else {
+        rowC = 0;
+        cout <<"RowSpacing Not Found set to default value."<<endl;
+    }
+
+    if (levelData->FindAttribute("ColumnSpacing")){
+        levelData->FindAttribute("ColumnSpacing")->QueryUnsignedValue(&spacC);
+    } else {
+        spacC = 0;
+        cout <<"ColumnSpacing Not Found set to default value."<<endl;
+    }
+
+    if (levelData->FindAttribute("BackgroundTexture")){
+        pathBackground = levelData->FindAttribute("BackgroundTexture")->Value();
+    } else {
+        pathBackground = "textures/background/background.jpg";  
+        cout <<"Background texture not found set to default."<<endl;
+    }
     this -> background = new GameObject(glm::vec2(0.0f), glm::vec2(this -> rendere -> getWidth(), this -> rendere -> getHeight() ),pathBackground, this -> rendere);
-    //pElement->FindAttribute("RowCount")->QueryUnsignedValue(&k);
-    
+
     float width_ =  static_cast<float>(this -> rendere -> getWidth())/ static_cast<float>(n);
-    float height_ = static_cast<float>(this -> rendere -> getHeight()) / (3.0f/2.0f*static_cast<float>(m));
+    float height_ = static_cast<float>(this -> rendere -> getHeight()) / (static_cast<float>(m));
     float minSquare = min(width_, height_);
-    minSquare = width_;
+    minSquare = minSquare * 0.8;
 
 // dodajemo vrste brkova
     XMLElement * brickS = levelData -> FirstChildElement("BrickTypes");
@@ -62,12 +90,15 @@ void Level::loadLevelFromFile(string path){
     v.push_back(levelID);
     
     int k = 0;
+    int offset = this -> rendere -> getWidth() - minSquare*n;
+    offset/=2;
+    cout << offset << endl;
     for (float i = 0; i < m; i++){
         for (float j = 0; j < n; j++){
            if (this -> brick.find(v[k]) == this -> brick.end()) {k++;continue;}
            Brick *br = new Brick(this -> brick[v[k++]]);
-           br -> setPos(glm::vec2(width_ * j + rowC, height_ * i + spacC));
-           br -> setSiz(glm::vec2(width_-  rowC, height_ - spacC));
+           br -> setPos(glm::vec2(offset+ minSquare * j + rowC, minSquare * i + spacC));
+           br -> setSiz(glm::vec2(minSquare-  rowC, minSquare - spacC));
            this -> levelBrickLayout.push_back(br);
         }
     } 
@@ -78,17 +109,42 @@ void Level::addBrick( XMLElement * brick){
     string id = brick->FindAttribute("Id")->Value();
     string texturePath = brick->FindAttribute("Texture")->Value();
     unsigned int hitPoints;
-    brick->FindAttribute("HitPoints")->QueryUnsignedValue(&hitPoints);
-    string soundPath = brick->FindAttribute("BreakSound")->Value();
-    unsigned int breakScore;
-    brick->FindAttribute("BreakScore")->QueryUnsignedValue(&breakScore);
+    Brick *brk = new Brick(texturePath, this -> rendere);
+    if (brick->FindAttribute("HitPoints")  == nullptr || string(brick->FindAttribute("HitPoints")->Value()) == string("Infinite") ){
+        brk -> setUndestrojable(true);
+    } else {
+        brick->FindAttribute("HitPoints")->QueryUnsignedValue(&hitPoints);
+    }  
+    
+    string soundPathBreak;
+    if (brick->FindAttribute("BreakSound")){
+        soundPathBreak = brick->FindAttribute("BreakSound")->Value();
+    } else {
+        soundPathBreak ="audio/bricks/Heart.wav"; // ovo treba promjenit na neki papir
+       // cout <<"BreakSound not specified, set to default path."<<endl;
+    }
 
-    string txt = "block.jpg";
-    Brick *brk = new Brick(txt, this -> rendere);
+    string soundPathHit;
+    if (brick->FindAttribute("HitSound")){
+        soundPathHit = brick->FindAttribute("HitSound")->Value();
+    } else {
+        soundPathHit ="audio/bricks/Heart.wav"; // ovo treba promjenit na neki papir
+        cout <<"HitSound not specified, set to default path."<<endl;
+    }
+
+
+    unsigned int breakScore;
+    if (brick->FindAttribute("BreakScore")){
+        brick->FindAttribute("BreakScore")->QueryUnsignedValue(&breakScore);
+    } else {
+        breakScore = 0;
+        //cout <<"BreakScore not specified set to default path."<<endl;
+    }
+
     brk -> setHit(hitPoints);
     brk -> setBreakScore(breakScore);
-    brk -> setBreakSound(soundPath);
-    brk -> setHitSound(soundPath);
+    brk -> setBreakSound(soundPathBreak);
+    brk -> setHitSound(soundPathHit);
 
     this -> brick[id] = brk;
 }
