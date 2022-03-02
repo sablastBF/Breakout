@@ -12,6 +12,6 @@ void main()
 {
     ourColor = vec3(1.0, 0.5, 0.5);
     texCoord = vec.zw;
-    gl_Position = projection*model*vec4(vec.xy, 0.0, 1.0); // see how we directly give a vec3 to vec4's constructor
+    gl_Position = projection*model*vec4(vec.xy, 0.1, 1.0); // see how we directly give a vec3 to vec4's constructor
 }
 

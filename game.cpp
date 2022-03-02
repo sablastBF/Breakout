@@ -28,8 +28,8 @@ Game::Game(unsigned int width_, unsigned int height_){
     // this -> background = new BackGround(texturePath1, this -> render);
 
 
-    string texturePath2 = "textures/ball/awesomeface.png";
-    this -> ball = new Ball(10.0f,texturePath2, this -> render);
+    string texturePath2 = "awesomeface.png";
+    this -> ball = new Ball(15.0f,texturePath2, this -> render);
     this -> setBallPositionStuck();
  
 
@@ -115,6 +115,7 @@ GLFWwindow*  Game::crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
     }    
 
     glEnable(GL_BLEND);
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     return window;
@@ -152,7 +153,6 @@ void  Game::updatePos(float dt){
         if (this -> CheckCollision(this -> ball, brks[i])){
             if (brks[i] -> getUndestrojable() == false && brks[i] -> chechHit() ){
                 this -> gameScore += brks[i] -> getBreakScore();
-                cout << this -> gameScore<< endl;
                 brks[i] -> setDistroid();
                 brks[i] -> playBreakSound(SoundEngine);
             } else {

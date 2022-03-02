@@ -35,7 +35,6 @@ GameObject::GameObject(GameObject * cop){
     this -> render = cop -> render;
 }
 
-
 void GameObject::setPos(glm::vec2 pos){
     this -> pos = pos;
 }
@@ -45,24 +44,18 @@ void GameObject::setSiz(glm::vec2 siz){
 }
 
 void GameObject::loadTexture(string &path){
-
     glGenTextures(1, &this ->textureID);
     glBindTexture(GL_TEXTURE_2D, this ->textureID); 
-     // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  
     int width, height, nrChannels;
-    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
     unsigned char *data = nullptr;
-    if (path.substr(path.find_last_of(".") + 1) == "png"){
-        data = stbi_load(path.c_str(), &width, &height, &nrChannels, 4);
-    } else {
-        data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
-    }
+ 
+    data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
     if (data)
     {
         if (path.substr(path.find_last_of(".") + 1) == "png"){
@@ -78,8 +71,8 @@ void GameObject::loadTexture(string &path){
     {
         std::cout << "Failed to load texture" << std::endl;
     }
-    cout <<"ASDAS"<<endl;
 
+    stbi_image_free(data);
 }
 
 glm::vec2 GameObject::getPos() {return this -> pos;}

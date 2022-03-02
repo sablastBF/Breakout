@@ -1,5 +1,7 @@
 #include <stb_image.h>
 #include <vector>
+#include <memory>
+
 #include "string"
 
 #include "level.hpp"
@@ -60,8 +62,8 @@ void Level::loadLevelFromFile(string path){
     this -> background = new GameObject(glm::vec2(0.0f), glm::vec2(this -> rendere -> getWidth(), this -> rendere -> getHeight() ),pathBackground, this -> rendere);
 
     float width_ =  static_cast<float>(this -> rendere -> getWidth())/ static_cast<float>(n);
-    float height_ = static_cast<float>(2.0f/3.0f*this -> rendere -> getHeight()) / (static_cast<float>(m));
-    float minSquare = min(width_, height_);
+    float height_ = static_cast<float>(this -> rendere -> getHeight()) / (static_cast<float>(m));
+    double minSquare = min(width_, height_);
     minSquare = minSquare;
 
 // dodajemo vrste brkova
@@ -74,7 +76,6 @@ void Level::loadLevelFromFile(string path){
     }
 
     string levelOtline = levelData->FirstChildElement("Bricks")->GetText();
-
     vector<string> v;
     string levelID;
     for (int i = 0; i < levelOtline.length(); i++){
@@ -93,12 +94,14 @@ void Level::loadLevelFromFile(string path){
     int offset = this -> rendere -> getWidth() - minSquare*n;
     offset/=2;
     cout << offset << endl;
-    for (float i = 0; i < m; i++){
-        for (float j = 0; j < n; j++){
+    for (double i = 0; i < m; i++){
+        for (double j = 0; j < n; j++){
            if (this -> brick.find(v[k]) == this -> brick.end()) {k++;continue;}
+           cout << v[k] << endl;
+          //shared_ptr<Brick> br(new Brick(this -> brick[v[k++]));
            Brick *br = new Brick(this -> brick[v[k++]]);
-           br -> setPos(glm::vec2( width_ * j + rowC, height_ * i + spacC));
-           br -> setSiz(glm::vec2(width_-  rowC, height_ - spacC));
+           br -> setPos(glm::vec2( minSquare * j , minSquare * i ));
+           br -> setSiz(glm::vec2(minSquare -rowC ,minSquare - spacC));
            this -> levelBrickLayout.push_back(br);
         }
     } 
@@ -108,6 +111,7 @@ void Level::addBrick( XMLElement * brick){
 
     string id = brick->FindAttribute("Id")->Value();
     string texturePath = brick->FindAttribute("Texture")->Value();
+    cout << texturePath << endl;
     unsigned int hitPoints;
     Brick *brk = new Brick(texturePath, this -> rendere);
     if (brick->FindAttribute("HitPoints")  == nullptr || string(brick->FindAttribute("HitPoints")->Value()) == string("Infinite") ){
