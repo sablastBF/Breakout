@@ -17,9 +17,9 @@ class Renderer
     unsigned int width, height;
 
  public:
-    Renderer(unsigned int width, unsigned int height);
+    Renderer(unsigned int width, unsigned int height, string pathVS, string pathFS);
 
-    ~Renderer();
+    ~Renderer(){};
     void initRender();
     void draw(glm::vec2,glm::vec2, unsigned int );
 

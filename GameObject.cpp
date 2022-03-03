@@ -9,26 +9,26 @@ void GameObject::draw(){
 GameObject::GameObject(){
 }
 
-GameObject::GameObject(string &texturePath, Renderer *render){
+GameObject::GameObject(string &texturePath, shared_ptr<Renderer> render){
     this -> loadTexture(texturePath);
     this -> render = render;
 }
 
-GameObject::GameObject( glm::vec2 siz, string &texturePath, Renderer *render){
+GameObject::GameObject( glm::vec2 siz, string &texturePath, shared_ptr<Renderer> render){
     this -> siz = siz;
     this -> loadTexture(texturePath);
     this -> render = render;
 }
 
 
-GameObject::GameObject(glm::vec2 pos, glm::vec2 siz, string &texturePath, Renderer *render){
+GameObject::GameObject(glm::vec2 pos, glm::vec2 siz, string &texturePath, shared_ptr<Renderer> render){
     this -> pos = pos;
     this -> siz = siz;
     this -> loadTexture(texturePath);
     this -> render = render;
 }
 
-GameObject::GameObject(GameObject * cop){
+GameObject::GameObject(shared_ptr<GameObject> cop){
     // this -> pos = cop -> pos;
     // this -> siz = cop -> siz;
     this -> textureID = cop -> textureID;
@@ -52,7 +52,7 @@ void GameObject::loadTexture(string &path){
     int width, height, nrChannels;
     unsigned char *data = nullptr;
  
-    data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+    data = stbi_load(path.c_str(), &width, &height, &nrChannels, 4);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 

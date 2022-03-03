@@ -15,7 +15,7 @@ class Brick : public GameObject
      string breakSound, hitSound;
     
   public:
-      Brick(Brick *);
+      Brick(shared_ptr<Brick> );
 
       void draw();
       void setDistroid();
@@ -28,6 +28,6 @@ class Brick : public GameObject
       void setBreakScore(unsigned int breakScore){this -> breakScore = breakScore;}
       void setBreakSound(string bs){this -> breakSound = bs;}
       void setHitSound(string hs){this -> hitSound = hs;}
-      void playHitSound(ISoundEngine *SoundEngine);
-      void playBreakSound(ISoundEngine *SoundEngine);
+      void playHitSound(ISoundEngine * SoundEngine);
+      void playBreakSound(ISoundEngine * SoundEngine);
  };

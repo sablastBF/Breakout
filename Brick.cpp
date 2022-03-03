@@ -22,7 +22,7 @@ bool Brick::chechHit(){
     return this -> hitPoint <= 0;
 }
 
-Brick::Brick(Brick *b){
+Brick::Brick(shared_ptr<Brick> b){
     this -> textureID =  b -> textureID;
     this -> hitPoint = b -> hitPoint;
     this -> breakScore = b -> breakScore;
@@ -37,6 +37,6 @@ void Brick::playHitSound(ISoundEngine *SoundEngine){
     SoundEngine->play2D(this -> hitSound.c_str(), false);
 
 }
-void Brick::playBreakSound(ISoundEngine *SoundEngine){
+void Brick::playBreakSound(ISoundEngine * SoundEngine){
     SoundEngine->play2D(this -> breakSound.c_str(), false);
 }   

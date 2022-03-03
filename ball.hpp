@@ -11,7 +11,7 @@ class Ball: public GameObject{
 
     public:
 
-    Ball(float radius, string &text, Renderer *r);
+    Ball(float radius, string &text, shared_ptr<Renderer> r);
     void updatePos(float dt);
     void flipStuck();
     bool getStuck();

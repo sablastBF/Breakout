@@ -8,10 +8,10 @@ class Paddle: public GameObject
 private:
     glm::vec2 velocity = glm::vec2(1000.0f);
 public:
-    Paddle(glm::vec2 siz,string &texture, Renderer *);
+    Paddle(glm::vec2 siz,string &texture, shared_ptr<Renderer> );
     ~Paddle(){};
 
-    bool updatePos(glm::vec2, float time);
+    void updatePos(glm::vec2, float time);
     void updateVelocty(glm::vec2 velocity);
 
 };  

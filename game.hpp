@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <irrklang/irrKlang.h>
+#include <memory>
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "level.hpp"
@@ -14,15 +15,14 @@
 class Game
 {
 private:
-    //map<string, unsigned int> popisTekstura; 
     glm::mat4 projection;
     unsigned int width, height;
-    Level *level = nullptr;
-    Ball *ball;
-    Paddle *paddle;
-    Renderer *render;
-    unsigned int gameScore;
-    ISoundEngine *SoundEngine;
+    shared_ptr<Level> level = nullptr;
+    shared_ptr<Renderer> render = nullptr;
+    shared_ptr<Renderer> brickRender = nullptr;
+
+    unsigned int gameScore = 0;
+    ISoundEngine* SoundEngine = nullptr;
 public:
 
     Game(unsigned int width_, unsigned int height_);
@@ -33,8 +33,7 @@ public:
     GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
     void draw();
     void updatePos(float dt);
-    void setBallPositionStuck();
-    bool CheckCollision(Ball *one, GameObject *two);
-    bool CheckCollision(GameObject *one, GameObject *two); 
+    bool CheckCollision(shared_ptr<Ball> one, shared_ptr<GameObject> two);
+    bool CheckCollision(shared_ptr<GameObject> one, shared_ptr<GameObject> two); 
 };
 

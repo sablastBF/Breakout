@@ -10,7 +10,9 @@ using namespace tinyxml2;
 
 void Level::draw(){
     this -> background -> draw();
-    for (Brick *b: this -> levelBrickLayout) b -> draw();
+    this -> ball -> draw();
+    this -> paddle -> draw();
+    for (shared_ptr<Brick> b: this -> levelBrickLayout) b -> draw();
 }
 
 void Level::loadLevelFromFile(string path){
@@ -22,7 +24,29 @@ void Level::loadLevelFromFile(string path){
     XMLDocument levelXml;
     levelXml.LoadFile(path.c_str());
 
-    tinyxml2::XMLElement* levelData = levelXml.FirstChild()->ToElement();
+    XMLElement * levelData = levelXml.FirstChild()->ToElement();
+
+    string paddleTexture;
+    if (levelData->FindAttribute("PaddleTexture")){
+        paddleTexture = levelData->FindAttribute("PaddleTexture")->Value();
+    } else {
+        paddleTexture = "textures/paddle/paddle.png";
+        cout <<"Background texture not found set to default."<<endl;
+    }
+
+    glm::vec2 paddleSize = glm::vec2(100.0f, 15.0f);
+    this -> paddle = shared_ptr<Paddle>(new Paddle(paddleSize, paddleTexture, this  -> render));
+    
+
+    string ballTexture;
+    if (levelData->FindAttribute("BallTexture")){
+        ballTexture = levelData->FindAttribute("BallTexture")->Value();
+    } else {
+        ballTexture = "textures/ball/ball.png";
+        cout <<"Background texture not found set to default."<<endl;
+    }
+    this -> ball =  shared_ptr<Ball>(new Ball(10.0f, ballTexture, this -> render));
+    this -> setBallPositionStuck();
 
     if (levelData->FindAttribute("RowCount")){
         levelData->FindAttribute("RowCount")->QueryUnsignedValue(&m);
@@ -59,15 +83,15 @@ void Level::loadLevelFromFile(string path){
         pathBackground = "textures/background/background.jpg";  
         cout <<"Background texture not found set to default."<<endl;
     }
-    this -> background = new GameObject(glm::vec2(0.0f), glm::vec2(this -> rendere -> getWidth(), this -> rendere -> getHeight() ),pathBackground, this -> rendere);
+    this -> background = shared_ptr<GameObject>(new GameObject(glm::vec2(0.0f), glm::vec2(this -> render -> getWidth(), this -> render -> getHeight() ),pathBackground, this -> render));
 
-    float width_ =  static_cast<float>(this -> rendere -> getWidth())/ static_cast<float>(n);
-    float height_ = static_cast<float>(this -> rendere -> getHeight()) / (static_cast<float>(m));
+    float width_ =  static_cast<float>(this -> render -> getWidth())/ static_cast<float>(n);
+    float height_ = static_cast<float>(this -> render -> getHeight()) / (static_cast<float>(m));
     double minSquare = min(width_, height_);
     minSquare = minSquare;
 
 // dodajemo vrste brkova
-    XMLElement * brickS = levelData -> FirstChildElement("BrickTypes");
+    XMLElement *brickS = levelData -> FirstChildElement("BrickTypes");
     brickS = brickS -> FirstChildElement("BrickType");
 
     while(brickS != nullptr){
@@ -91,15 +115,12 @@ void Level::loadLevelFromFile(string path){
     v.push_back(levelID);
     
     int k = 0;
-    int offset = this -> rendere -> getWidth() - minSquare*n;
+    int offset = this -> render -> getWidth() - minSquare*n;
     offset/=2;
-    cout << offset << endl;
     for (double i = 0; i < m; i++){
         for (double j = 0; j < n; j++){
            if (this -> brick.find(v[k]) == this -> brick.end()) {k++;continue;}
-           cout << v[k] << endl;
-          //shared_ptr<Brick> br(new Brick(this -> brick[v[k++]));
-           Brick *br = new Brick(this -> brick[v[k++]]);
+           shared_ptr<Brick> br = shared_ptr<Brick>(new Brick(this -> brick[v[k++]]));
            br -> setPos(glm::vec2( minSquare * j , minSquare * i ));
            br -> setSiz(glm::vec2(minSquare -rowC ,minSquare - spacC));
            this -> levelBrickLayout.push_back(br);
@@ -107,13 +128,19 @@ void Level::loadLevelFromFile(string path){
     } 
 }
 
-void Level::addBrick( XMLElement * brick){
+void Level::setBallPositionStuck(){
+    glm::vec2 newPos = paddle -> getPos();
+    newPos.x += paddle -> getSiz().x/2.0f - ball -> getRadius();
+    newPos.y += -  ball -> getRadius()*2.0f;
+    ball -> setPos(newPos);
+}
+
+void Level::addBrick( XMLElement* brick){
 
     string id = brick->FindAttribute("Id")->Value();
     string texturePath = brick->FindAttribute("Texture")->Value();
-    cout << texturePath << endl;
     unsigned int hitPoints;
-    Brick *brk = new Brick(texturePath, this -> rendere);
+    shared_ptr<Brick> brk = shared_ptr<Brick>(new Brick(texturePath, this -> render));
     if (brick->FindAttribute("HitPoints")  == nullptr || string(brick->FindAttribute("HitPoints")->Value()) == string("Infinite") ){
         brk -> setUndestrojable(true);
     } else {
@@ -153,11 +180,12 @@ void Level::addBrick( XMLElement * brick){
     this -> brick[id] = brk;
 }
 
-Level::Level(string path,Renderer *rendere){
-    this -> rendere = rendere;
+Level::Level(string path,shared_ptr<Renderer> rendere){
+    this -> render = rendere;
     this -> loadLevelFromFile(path);
 }
 
-vector<Brick *> &  Level::getBricks(){
+vector<shared_ptr<Brick> > & Level::getBricks(){
     return this -> levelBrickLayout;
 }
+

@@ -3,14 +3,16 @@
 	ColumnCount="23"
 	RowSpacing="3"
 	ColumnSpacing="3"
-	BackgroundTexture="textures/background/background.jpeg">
-
+	BackgroundTexture="textures/background/background2.png"
+	PaddleTexture="textures/paddle/paddle.png"
+	BallTexture="textures/ball/ball.png"
+  >
   <BrickTypes>
 
     <!-- Soft Brick -->
     <BrickType
 			Id="I"
-			Texture="textures/brick/block.jpg"
+			Texture="textures/brick/brick_happy.png"
 			HitPoints="1"
 			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="50" />
@@ -18,7 +20,7 @@
     <!-- Medium Brick -->
     <BrickType
 			Id="M"
-			Texture="textures/brick/block.jpg"
+			Texture="textures/brick/brick_happy.png"
 			HitPoints="2"
 			HitSound="audio/bricks/Meseg.wav"
 			BreakSound="audio/bricks/Meseg.wav"
@@ -27,7 +29,7 @@
     <!-- Hard Brick -->
     <BrickType
 			Id="H"
-			Texture="textures/brick/block.jpg"
+			Texture="textures/brick/brick_strong.png"
 			HitPoints="3"
 			HitSound="audio/bricks/Meseg.wav"
 			BreakSound="audio/bricks/Meseg.wav"
@@ -36,7 +38,7 @@
     <!-- Impenetrable Brick -->
     <BrickType
 			Id="S"
-			Texture="textures/brick/block.jpg"
+			Texture="textures/brick/shild.png"
 			HitPoints="Infinite"
 			HitSound="audio/bricks/metal3.wav" />
 

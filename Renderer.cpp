@@ -63,13 +63,13 @@ void Renderer::setShader(string &vertexPath, string &fragmetPath){
 
 
 
-Renderer::Renderer(unsigned int width, unsigned int height){
+Renderer::Renderer(unsigned int width, unsigned int height, string pathVS, string pathFS){
     this -> width = width;
     this -> height = height;
 
     this -> initRender();
-    string shaderPathVertex = "shaders/basic_brick.vs",shaderPathFragment =  "shaders/basic_brick.fs";
-    this -> setShader(shaderPathVertex, shaderPathFragment);
+    //string shaderPathVertex = "shaders/basic_brick.vs",shaderPathFragment =  "shaders/basic_brick.fs";
+    this -> setShader(pathVS, pathFS);
     this -> projection = glm::ortho(0.0f, static_cast<float>( width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
 }
 

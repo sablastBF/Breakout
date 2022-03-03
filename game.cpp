@@ -1,6 +1,4 @@
-
-
-
+//#include <memory>
 #include "game.hpp"
 
 using namespace irrklang;
@@ -13,31 +11,19 @@ Game::Game(unsigned int width_, unsigned int height_){
   
     GLFWwindow* window = crateWindow( this -> width, this -> height);
     if (!window) return ;
-  
-    this  -> render = new Renderer( this -> width, this -> height);
+    this  -> render = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
+    this  -> brickRender = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
+
     // string path = "ball.png";
     // Brick *br = new Brick(glm::vec2(20.0f), glm::vec2(100.0f), path, this -> render);
     string levelPath = "levels/dragon.xml";
-
-    this -> level = new Level(levelPath,  this -> render);
-    glm::vec2 paddleSize = glm::vec2(200.0f, 20.0f);
-    string texturePath = "textures/paddle/padle.jpg";
-    this -> paddle = new Paddle(paddleSize, texturePath, this  -> render);
-    
-    // string texturePath1 = "background.jpg";
-    // this -> background = new BackGround(texturePath1, this -> render);
-
-
-    string texturePath2 = "awesomeface.png";
-    this -> ball = new Ball(15.0f,texturePath2, this -> render);
-    this -> setBallPositionStuck();
- 
+    this -> level = shared_ptr<Level>(new Level(levelPath,  this -> render));
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
 
     SoundEngine = createIrrKlangDevice();
-    SoundEngine->play2D("audio/background/ForestBSB.wav", true);
+    SoundEngine->play2D("audio/background/UA.mp3", true);
 
     while(!glfwWindowShouldClose(window)){
         float currentFrame = glfwGetTime();
@@ -62,34 +48,30 @@ void Game::processInput(GLFWwindow *window, float deltaTime)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    shared_ptr<Paddle> paddle = this -> level -> getPaddle();
+    shared_ptr<Ball> ball = this -> level -> getBall();
 
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-        if (this -> paddle -> updatePos(glm::vec2(-1.0f,0.0f),deltaTime)){
-            if (this -> ball -> getStuck()){
-                this -> setBallPositionStuck();
-            }
+        paddle -> updatePos(glm::vec2(-1.0f,0.0f),deltaTime);
+        if (ball -> getStuck()){
+            this -> level -> setBallPositionStuck();
         }
-    
     }
 
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-        if (this -> paddle -> updatePos(glm::vec2(1.0f,0.0f),deltaTime)){
-            if (this -> ball -> getStuck()){
-                this -> setBallPositionStuck();
-            }
+        paddle -> updatePos(glm::vec2(1.0f,0.0f),deltaTime);
+        if (ball -> getStuck()){
+            this -> level -> setBallPositionStuck();
         }
-
     }
 
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
-        this -> ball -> flipStuck();
+        ball -> flipStuck();
     }
 }
 
 void Game::draw(){
     this -> level -> draw();
-    this -> paddle -> draw();
-    this -> ball -> draw();
 }
 
 GLFWwindow*  Game::crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
@@ -115,7 +97,6 @@ GLFWwindow*  Game::crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
     }    
 
     glEnable(GL_BLEND);
-
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     return window;
@@ -128,29 +109,41 @@ void Game::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 
 
+bool Game::CheckCollision(shared_ptr<GameObject> one, shared_ptr<GameObject> two) // AABB - AABB collision
+{   
+    bool collisionX = one -> getPos().x + one -> getSiz().x > two ->getPos().x &&
+        two -> getPos().x + two -> getSiz().x > one -> getPos().x;
+
+    bool collisionY = one -> getPos().y + one -> getSiz().y > two ->getPos().y &&
+        two -> getPos().y + two -> getSiz().y > one -> getPos().y;
+    return collisionX && collisionY;
+}
+
 
 void  Game::updatePos(float dt){
-    this -> ball -> updatePos(dt);
+    shared_ptr<Paddle> paddle = this -> level -> getPaddle();
+    shared_ptr<Ball> ball = this -> level -> getBall();
+    ball -> updatePos(dt);
 
-    if (this -> CheckCollision(this -> ball, this -> paddle)){
+    if (this -> CheckCollision(ball, paddle)){
         // uzmemo pozicju lopte, pozicju paddla 
         //ball -> changeVelocityY();
 
-        glm::vec2 bp = this -> ball -> getPos() + this -> ball -> getRadius();
-        glm::vec2 pad = this -> paddle -> getPos() + this -> paddle -> getSiz()/2.0f;
+        glm::vec2 bp = ball -> getPos() + ball -> getRadius();
+        glm::vec2 pad = paddle -> getPos() + paddle -> getSiz()/2.0f;
         glm::vec2 newVelocty = bp - pad;
         newVelocty.y -= 100.0f;
         newVelocty  = normalize(newVelocty);
-        this -> ball -> setVelocrty(newVelocty * glm::length(ball -> getVelocrty()));
+        ball -> setVelocrty(newVelocty * glm::length(ball -> getVelocrty()));
     }
 
     // izmedu lopte i 
 
-    vector<Brick *> brks = this -> level -> getBricks();
+    vector<shared_ptr<Brick>> brks = this -> level -> getBricks();
     for (int i =  brks.size() - 1; ~i; i--){
         if (brks[i] -> getDestroid()) continue;
 
-        if (this -> CheckCollision(this -> ball, brks[i])){
+        if (this -> CheckCollision(ball, brks[i])){
             if (brks[i] -> getUndestrojable() == false && brks[i] -> chechHit() ){
                 this -> gameScore += brks[i] -> getBreakScore();
                 brks[i] -> setDistroid();
@@ -163,41 +156,21 @@ void  Game::updatePos(float dt){
     }
 }
 
-// funkcija koja zaustavlja lopticu na paadleu
-void Game::setBallPositionStuck(){
-    glm::vec2 newPos = this -> paddle -> getPos() ;
-    newPos.x += this -> paddle -> getSiz().x/2.0f - this -> ball -> getRadius();
-    newPos.y += - this -> ball -> getRadius()*2.0f;
-    this -> ball -> setPos(newPos);
-}
-
-bool Game::CheckCollision(GameObject *one, GameObject *two) // AABB - AABB collision
-{   
-    bool collisionX = one -> getPos().x + one -> getSiz().x > two ->getPos().x &&
-        two -> getPos().x + two -> getSiz().x > one -> getPos().x;
-
-    bool collisionY = one -> getPos().y + one -> getSiz().y > two ->getPos().y &&
-        two -> getPos().y + two -> getSiz().y > one -> getPos().y;
-    return collisionX && collisionY;
-}
 
 
-bool Game::CheckCollision(Ball *one, GameObject *two) // AABB - Circle collision
+bool Game::CheckCollision(shared_ptr<Ball> one, shared_ptr<GameObject> two) 
 {
-    // get center point circle first 
+    shared_ptr<Ball> ball = this -> level -> getBall();
+
     glm::vec2 center(one -> getPos() + one -> getRadius());
-    // calculate AABB info (center, half-extents)
     glm::vec2 aabb_half_extents(two -> getSiz().x  / 2.0f,two -> getSiz().y / 2.0f);
     glm::vec2 aabb_center(
         two -> getPos().x + aabb_half_extents.x, 
         two-> getPos().y + aabb_half_extents.y);
 
-    // get difference vector between both centers
     glm::vec2 difference = center - aabb_center;
     glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
-    // add clamped value to AABB_center and we get the value of box closest to circle
     glm::vec2 closest = aabb_center + clamped;
-    // retrieve vector between center circle and closest point AABB and check if length <= radius
     difference = closest - center;
     if (glm::length(difference) > one -> getRadius()) return false;
 

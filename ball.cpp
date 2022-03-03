@@ -1,7 +1,7 @@
 #include "ball.hpp"
 
 
-Ball::Ball(float radius, string &text, Renderer *r): GameObject(glm::vec2(2.0f*radius), text, r){
+Ball::Ball(float radius, string &text, shared_ptr<Renderer> r): GameObject(glm::vec2(2.0f*radius), text, r){
     this -> radius = radius;
 }
 
