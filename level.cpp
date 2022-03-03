@@ -5,6 +5,8 @@
 #include "string"
 
 #include "level.hpp"
+# define PI  3.14159265358979323846f
+
 
 using namespace tinyxml2;
 
@@ -12,7 +14,9 @@ void Level::draw(){
     this -> background -> draw();
     this -> ball -> draw();
     this -> paddle -> draw();
-    for (shared_ptr<Brick> b: this -> levelBrickLayout) b -> draw();
+    for (shared_ptr<Brick> brick: this -> levelBrickLayout) brick -> draw();
+
+    for (shared_ptr<Ball> ball: this -> balls) ball -> draw();
 }
 
 void Level::loadLevelFromFile(string path){
@@ -172,11 +176,19 @@ void Level::addBrick( XMLElement* brick){
         //cout <<"BreakScore not specified set to default path."<<endl;
     }
 
+    unsigned int numberOfBalls;
+    if (brick->FindAttribute("AddBalls")){
+        brick->FindAttribute("AddBalls")->QueryUnsignedValue(&numberOfBalls);
+    } else {
+        numberOfBalls = 0;
+        //cout <<"BreakScore not specified set to default path."<<endl;
+    }
+
     brk -> setHit(hitPoints);
     brk -> setBreakScore(breakScore);
     brk -> setBreakSound(soundPathBreak);
     brk -> setHitSound(soundPathHit);
-
+    brk -> setNumberOfBalls(numberOfBalls);
     this -> brick[id] = brk;
 }
 
@@ -187,5 +199,28 @@ Level::Level(string path,shared_ptr<Renderer> rendere){
 
 vector<shared_ptr<Brick> > & Level::getBricks(){
     return this -> levelBrickLayout;
+}
+
+vector<shared_ptr<Ball> > & Level::getBalls(){
+    return this -> balls;
+}
+
+
+void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
+    cout <<N<<endl;
+    double normaX = 0.0, normaY = 0.0;
+    double fi = 0.0;
+    for (double i = 0; i < N; i++){
+        fi = i/N*2.0*PI;
+        normaX = cos(fi);
+        normaY = sin(fi);
+
+        glm::vec2 newVelocty = glm::vec2(cos(fi), sin(fi));
+        glm::vec2 v =(newVelocty * glm::length(ball -> getVelocrty()));
+        shared_ptr<Ball> b = shared_ptr<Ball>(new Ball(this -> ball, v));
+        this -> balls.push_back(b);
+    }
+    // ball -> textureID;
+    // shared_ptr<Ball> b =  shared_ptr(new Ball(ball -> textureID));
 }
 

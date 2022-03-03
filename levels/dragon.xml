@@ -12,10 +12,11 @@
     <!-- Soft Brick -->
     <BrickType
 			Id="I"
-			Texture="textures/brick/brick_happy.png"
+			Texture="textures/brick/bre.jpg"
 			HitPoints="1"
 			BreakSound="audio/bricks/Meseg.wav"
-			BreakScore="50" />
+			BreakScore="50"
+      AddBalls="10"/>
 
     <!-- Medium Brick -->
     <BrickType
@@ -45,7 +46,7 @@
   </BrickTypes>
 
   <Bricks>
-    _ H H H H H _ H _ H _ H _ H _ H _ H _ H _ H _
+    _ H _ H H H _ H _ H _ H _ H _ H _ H _ H _ H _
     _ _ H _ H _ H _ H _ H _ H _ H _ H _ H _ H _ _
     _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _
     _ _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ _
@@ -65,6 +66,6 @@
     _ _ _ _ _ _ _ _ S _ _ _ _ _ S _ _ _ _ _ _ _ _
     _ _ _ _ _ _ _ _ _ S _ _ _ S _ _ _ _ _ _ _ _ _
     _ _ _ _ _ _ _ _ _ _ S _ S _ _ _ _ _ _ _ _ _ _
-    _ _ _ _ _ _ _ _ _ _ _ S _ _ _ _ _ _ _ _ _ _ _
+    _ _ _ _ _ _ _ _ _ _ _ I _ _ _ _ _ _ _ _ _ _ _
   </Bricks>
 </Level>

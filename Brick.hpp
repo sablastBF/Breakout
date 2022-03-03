@@ -13,6 +13,7 @@ class Brick : public GameObject
      unsigned int hitPoint = 0, breakScore = 1;
      bool destroid = false, undestrojable = false;
      string breakSound, hitSound;
+     unsigned int addBalls = 0;
     
   public:
       Brick(shared_ptr<Brick> );
@@ -22,6 +23,8 @@ class Brick : public GameObject
       bool getDestroid();
       bool getUndestrojable(){return this -> undestrojable;}
       void setUndestrojable(bool state){this -> undestrojable = state;}
+      void setNumberOfBalls(unsigned int addBalls){this -> addBalls = addBalls;}
+      unsigned int getNumberOfBalls(){return this -> addBalls;}
       unsigned int getBreakScore();
       bool chechHit();
       void setHit(unsigned int hit){this -> hitPoint = hit;}

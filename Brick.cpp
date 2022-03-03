@@ -30,6 +30,7 @@ Brick::Brick(shared_ptr<Brick> b){
     this -> render = b -> render;
     this -> breakSound = b -> breakSound;
     this -> hitSound = b -> hitSound;
+    this -> addBalls = b -> addBalls;
 }
 
 

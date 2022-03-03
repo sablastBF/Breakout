@@ -20,7 +20,6 @@ GameObject::GameObject( glm::vec2 siz, string &texturePath, shared_ptr<Renderer>
     this -> render = render;
 }
 
-
 GameObject::GameObject(glm::vec2 pos, glm::vec2 siz, string &texturePath, shared_ptr<Renderer> render){
     this -> pos = pos;
     this -> siz = siz;

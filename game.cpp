@@ -139,30 +139,68 @@ void  Game::updatePos(float dt){
 
     // izmedu lopte i 
 
-    vector<shared_ptr<Brick>> brks = this -> level -> getBricks();
+    vector<shared_ptr<Brick>> &brks = this -> level -> getBricks();
     for (int i =  brks.size() - 1; ~i; i--){
         if (brks[i] -> getDestroid()) continue;
 
         if (this -> CheckCollision(ball, brks[i])){
             if (brks[i] -> getUndestrojable() == false && brks[i] -> chechHit() ){
+            
                 this -> gameScore += brks[i] -> getBreakScore();
                 brks[i] -> setDistroid();
                 brks[i] -> playBreakSound(SoundEngine);
+                level -> addBalls(ball, brks[i] -> getNumberOfBalls());
             } else {
                 brks[i] -> playHitSound(SoundEngine);
             }
             break;
         }
     }
+
+    vector<shared_ptr<Ball>> &balls = this -> level -> getBalls();
+    for (shared_ptr<Ball> b: balls){ 
+        b -> updatePos(dt);
+         if (this -> CheckCollision(b, paddle)){
+            // uzmemo pozicju lopte, pozicju paddla 
+            //ball -> changeVelocityY();
+
+            glm::vec2 bp = b -> getPos() + b -> getRadius();
+            glm::vec2 pad = paddle -> getPos() + paddle -> getSiz()/2.0f;
+            glm::vec2 newVelocty = bp - pad;
+            newVelocty.y -= 100.0f;
+            newVelocty  = normalize(newVelocty);
+            b -> setVelocrty(newVelocty * glm::length(b -> getVelocrty()));
+        }
+
+        // izmedu lopte i 
+
+        for (int i =  brks.size() - 1; ~i; i--){
+            if (brks[i] -> getDestroid()) continue;
+
+            if (this -> CheckCollision(b, brks[i])){
+                if (brks[i] -> getUndestrojable() == false && brks[i] -> chechHit() ){
+                
+                    this -> gameScore += brks[i] -> getBreakScore();
+                    brks[i] -> setDistroid();
+                    brks[i] -> playBreakSound(SoundEngine);
+                    level -> addBalls(b, brks[i] -> getNumberOfBalls());
+                } else {
+                    brks[i] -> playHitSound(SoundEngine);
+                }
+                break;
+            }
+        }
+    
+    }
+
 }
 
 
 
-bool Game::CheckCollision(shared_ptr<Ball> one, shared_ptr<GameObject> two) 
+bool Game::CheckCollision(shared_ptr<Ball> ball, shared_ptr<GameObject> two) 
 {
-    shared_ptr<Ball> ball = this -> level -> getBall();
 
-    glm::vec2 center(one -> getPos() + one -> getRadius());
+    glm::vec2 center(ball -> getPos() + ball -> getRadius());
     glm::vec2 aabb_half_extents(two -> getSiz().x  / 2.0f,two -> getSiz().y / 2.0f);
     glm::vec2 aabb_center(
         two -> getPos().x + aabb_half_extents.x, 
@@ -172,7 +210,7 @@ bool Game::CheckCollision(shared_ptr<Ball> one, shared_ptr<GameObject> two)
     glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
     glm::vec2 closest = aabb_center + clamped;
     difference = closest - center;
-    if (glm::length(difference) > one -> getRadius()) return false;
+    if (glm::length(difference) > ball -> getRadius()) return false;
 
 
     glm::vec2 compass[] = {
