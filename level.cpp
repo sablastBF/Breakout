@@ -15,7 +15,10 @@ void Level::draw(){
     this -> paddle -> draw();
     for (shared_ptr<Brick> brick: this -> levelBrickLayout) brick -> draw();
 
-    for (shared_ptr<Ball> ball: this -> balls) ball -> draw();
+    for (shared_ptr<Ball> ball: this -> balls) {
+        ball -> draw();
+        ball -> drawLinePath();
+    }
 }
 
 void Level::loadLevelFromFile(string path){

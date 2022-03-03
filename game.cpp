@@ -139,7 +139,7 @@ void  Game::updatePos(float dt){
             b -> setVelocrty(newVelocty * glm::length(b -> getVelocrty()));
         }
 
-        // izmedu lopte i 
+        // izmedu lopte i brikova
 
         for (int i =  brks.size() - 1; ~i; i--){
             if (brks[i] -> getDestroid()) continue;

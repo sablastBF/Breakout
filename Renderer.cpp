@@ -27,7 +27,7 @@ void Renderer::initRender(){
         0.0f, 0.0f, 0.0f, 0.0f, 
         0.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 0.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 1.0f
     };
 
 
@@ -39,10 +39,8 @@ void Renderer::initRender(){
     glGenVertexArrays(1, &this -> bickVAO);
 
     glGenBuffers(1, &this -> VBO);
-
     glGenBuffers(1, &this -> EBO);
     glBindVertexArray(this -> bickVAO);
-
     glBindBuffer(GL_ARRAY_BUFFER, this -> VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 

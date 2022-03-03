@@ -27,7 +27,7 @@ class Renderer
     void setTexture(string &, bool alpfha = false);
     void setProjectionMatrix(unsigned int width,unsigned int hegiht );
     //void setSize(unsigned int width,unsigned int height );
-
+    glm::mat4 getProjection(){return projection;}
     unsigned int getWidth();
     unsigned int getHeight();
  };
