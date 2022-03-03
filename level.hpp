@@ -16,7 +16,6 @@ private:
     vector<shared_ptr<Brick>> levelBrickLayout;
 
     shared_ptr<GameObject> background = nullptr;
-    shared_ptr<Ball> ball = nullptr;
     shared_ptr<Paddle> paddle = nullptr;
     vector<shared_ptr<Ball>> balls;
 
@@ -32,7 +31,7 @@ public:
     vector<shared_ptr<Brick>> & getBricks();
     
     shared_ptr<Paddle> getPaddle() {return paddle;}
-    shared_ptr<Ball> getBall() {return ball;}
+    shared_ptr<Ball> getBall() {return balls[0];}
     void setBallPositionStuck();
     void addBalls(shared_ptr<Ball> ball, unsigned int N);
     vector<shared_ptr<Ball> > & getBalls();

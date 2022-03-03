@@ -12,7 +12,6 @@ using namespace tinyxml2;
 
 void Level::draw(){
     this -> background -> draw();
-    this -> ball -> draw();
     this -> paddle -> draw();
     for (shared_ptr<Brick> brick: this -> levelBrickLayout) brick -> draw();
 
@@ -49,7 +48,7 @@ void Level::loadLevelFromFile(string path){
         ballTexture = "textures/ball/ball.png";
         cout <<"Background texture not found set to default."<<endl;
     }
-    this -> ball =  shared_ptr<Ball>(new Ball(10.0f, ballTexture, this -> render));
+    this -> balls.push_back(shared_ptr<Ball>(new Ball(10.0f, ballTexture, this -> render)));
     this -> setBallPositionStuck();
 
     if (levelData->FindAttribute("RowCount")){
@@ -134,9 +133,9 @@ void Level::loadLevelFromFile(string path){
 
 void Level::setBallPositionStuck(){
     glm::vec2 newPos = paddle -> getPos();
-    newPos.x += paddle -> getSiz().x/2.0f - ball -> getRadius();
-    newPos.y += -  ball -> getRadius()*2.0f;
-    ball -> setPos(newPos);
+    newPos.x += paddle -> getSiz().x/2.0f - balls[0] -> getRadius();
+    newPos.y += -  balls[0] -> getRadius()*2.0f;
+    balls[0] -> setPos(newPos);
 }
 
 void Level::addBrick( XMLElement* brick){
@@ -217,7 +216,7 @@ void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
 
         glm::vec2 newVelocty = glm::vec2(cos(fi), sin(fi));
         glm::vec2 v =(newVelocty * glm::length(ball -> getVelocrty()));
-        shared_ptr<Ball> b = shared_ptr<Ball>(new Ball(this -> ball, v));
+        shared_ptr<Ball> b = shared_ptr<Ball>(new Ball(ball, v));
         this -> balls.push_back(b);
     }
     // ball -> textureID;

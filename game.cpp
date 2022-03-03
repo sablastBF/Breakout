@@ -122,42 +122,9 @@ bool Game::CheckCollision(shared_ptr<GameObject> one, shared_ptr<GameObject> two
 
 void  Game::updatePos(float dt){
     shared_ptr<Paddle> paddle = this -> level -> getPaddle();
-    shared_ptr<Ball> ball = this -> level -> getBall();
-    ball -> updatePos(dt);
-
-    if (this -> CheckCollision(ball, paddle)){
-        // uzmemo pozicju lopte, pozicju paddla 
-        //ball -> changeVelocityY();
-
-        glm::vec2 bp = ball -> getPos() + ball -> getRadius();
-        glm::vec2 pad = paddle -> getPos() + paddle -> getSiz()/2.0f;
-        glm::vec2 newVelocty = bp - pad;
-        newVelocty.y -= 100.0f;
-        newVelocty  = normalize(newVelocty);
-        ball -> setVelocrty(newVelocty * glm::length(ball -> getVelocrty()));
-    }
-
-    // izmedu lopte i 
-
     vector<shared_ptr<Brick>> &brks = this -> level -> getBricks();
-    for (int i =  brks.size() - 1; ~i; i--){
-        if (brks[i] -> getDestroid()) continue;
-
-        if (this -> CheckCollision(ball, brks[i])){
-            if (brks[i] -> getUndestrojable() == false && brks[i] -> chechHit() ){
-            
-                this -> gameScore += brks[i] -> getBreakScore();
-                brks[i] -> setDistroid();
-                brks[i] -> playBreakSound(SoundEngine);
-                level -> addBalls(ball, brks[i] -> getNumberOfBalls());
-            } else {
-                brks[i] -> playHitSound(SoundEngine);
-            }
-            break;
-        }
-    }
-
     vector<shared_ptr<Ball>> &balls = this -> level -> getBalls();
+
     for (shared_ptr<Ball> b: balls){ 
         b -> updatePos(dt);
          if (this -> CheckCollision(b, paddle)){
@@ -167,7 +134,7 @@ void  Game::updatePos(float dt){
             glm::vec2 bp = b -> getPos() + b -> getRadius();
             glm::vec2 pad = paddle -> getPos() + paddle -> getSiz()/2.0f;
             glm::vec2 newVelocty = bp - pad;
-            newVelocty.y -= 100.0f;
+            newVelocty.y -= paddle -> getSiz().x*2.0f;
             newVelocty  = normalize(newVelocty);
             b -> setVelocrty(newVelocty * glm::length(b -> getVelocrty()));
         }
