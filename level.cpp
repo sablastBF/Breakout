@@ -2,9 +2,9 @@
 #include <vector>
 #include <memory>
 
-#include "string"
-
+#include <string>
 #include "level.hpp"
+
 # define PI  3.14159265358979323846f
 
 
@@ -17,7 +17,7 @@ void Level::draw(){
 
     for (shared_ptr<Ball> ball: this -> balls) {
         ball -> draw();
-        ball -> drawLinePath();
+       // ball -> drawLinePath();
     }
 }
 
@@ -209,11 +209,11 @@ vector<shared_ptr<Ball> > & Level::getBalls(){
 
 
 void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
-    cout <<N<<endl;
     double normaX = 0.0, normaY = 0.0;
     double fi = 0.0;
     for (double i = 0; i < N; i++){
         fi = i/N*2.0*PI;
+
         normaX = cos(fi);
         normaY = sin(fi);
 
@@ -225,4 +225,16 @@ void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
     // ball -> textureID;
     // shared_ptr<Ball> b =  shared_ptr(new Ball(ball -> textureID));
 }
+
+void Level::reste(){
+    // resetira cigle
+    for (shared_ptr<Brick> brk: levelBrickLayout){
+        brk -> resetDestroid();
+    }
+    // lopte
+    balls.resize(1);
+    balls[0] -> setStuck();
+
+}
+
 

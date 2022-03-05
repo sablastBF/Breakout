@@ -4,25 +4,38 @@
 using namespace irrklang;
 
 Game::Game(unsigned int width_, unsigned int height_){
-
     this -> width = width_;
     this -> height = height_;
-    //this -> projection = glm::ortho(0.0f, static_cast<float>( this -> width), static_cast<float>(this -> height), 0.0f, -1.0f, 1.0f);  
-  
-    GLFWwindow* window = crateWindow( this -> width, this -> height);
+}
+
+void Game::addLevel(string pathToLevel){
+    levels.push_back(pathToLevel);
+    numberOfLevels++;
+}
+
+// game manager, pokrece iduce levele, resetira levele...
+void Game::RunGame(){
+    // radi sve stvari koje su potrebne za sve levele
+    window = crateWindow( this -> width, this -> height);
+    SoundEngine = createIrrKlangDevice();
+
     if (!window) return ;
     this  -> render = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
     this  -> brickRender = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
 
-    // string path = "ball.png";
-    // Brick *br = new Brick(glm::vec2(20.0f), glm::vec2(100.0f), path, this -> render);
-    string levelPath = "levels/dragon.xml";
+    const unsigned int size = numberOfLevels;
+    bool gameState = 0;
+    for (int i = 0 ; i < size; i++){
+        gameState = this -> RunLevel(levels[i]);
+    }
+}
+
+bool Game::RunLevel(string levelPath){
     this -> level = shared_ptr<Level>(new Level(levelPath,  this -> render));
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
 
-    SoundEngine = createIrrKlangDevice();
     SoundEngine->play2D("audio/background/UA.mp3", true);
 
     while(!glfwWindowShouldClose(window)){
@@ -41,6 +54,8 @@ Game::Game(unsigned int width_, unsigned int height_){
         glfwSwapBuffers(window);
         glfwPollEvents();
     }   
+
+    return false;
 }
 
 
@@ -66,7 +81,7 @@ void Game::processInput(GLFWwindow *window, float deltaTime)
     }
 
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
-        ball -> flipStuck();
+        ball -> setUnStuck();
     }
 }
 
@@ -124,9 +139,12 @@ void  Game::updatePos(float dt){
     shared_ptr<Paddle> paddle = this -> level -> getPaddle();
     vector<shared_ptr<Brick>> &brks = this -> level -> getBricks();
     vector<shared_ptr<Ball>> &balls = this -> level -> getBalls();
-
-    for (shared_ptr<Ball> b: balls){ 
+    int siz = balls.size();
+    shared_ptr<Ball> b = nullptr;
+    for (int i = 0; i < siz; i++){
+        b = balls[i];
         b -> updatePos(dt);
+
          if (this -> CheckCollision(b, paddle)){
             // uzmemo pozicju lopte, pozicju paddla 
             //ball -> changeVelocityY();
@@ -157,12 +175,11 @@ void  Game::updatePos(float dt){
                 break;
             }
         }
-    
     }
 
 }
 
-
+// ovo tude treba ispraviti 
 
 bool Game::CheckCollision(shared_ptr<Ball> ball, shared_ptr<GameObject> two) 
 {

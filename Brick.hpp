@@ -33,4 +33,7 @@ class Brick : public GameObject
       void setHitSound(string hs){this -> hitSound = hs;}
       void playHitSound(ISoundEngine * SoundEngine);
       void playBreakSound(ISoundEngine * SoundEngine);
+
+      void resetDestroid();
+
  };

@@ -20,9 +20,12 @@ private:
     shared_ptr<Level> level = nullptr;
     shared_ptr<Renderer> render = nullptr;
     shared_ptr<Renderer> brickRender = nullptr;
-
+    unsigned int numberOfLevels = 0;
     unsigned int gameScore = 0;
+    vector<string> levels;
     ISoundEngine* SoundEngine = nullptr;
+    GLFWwindow* window;
+    
 public:
 
     Game(unsigned int width_, unsigned int height_);
@@ -35,5 +38,8 @@ public:
     void updatePos(float dt);
     bool CheckCollision(shared_ptr<Ball> one, shared_ptr<GameObject> two);
     bool CheckCollision(shared_ptr<GameObject> one, shared_ptr<GameObject> two); 
+    void addLevel(string path);
+    void RunGame();
+    bool RunLevel(string path);
 };
 

@@ -35,5 +35,8 @@ public:
     void setBallPositionStuck();
     void addBalls(shared_ptr<Ball> ball, unsigned int N);
     vector<shared_ptr<Ball> > & getBalls();
+
+    void reste();
+    
 };
 

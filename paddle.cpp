@@ -15,3 +15,8 @@ void Paddle::updatePos(glm::vec2 direction, float dt){
 void Paddle::updateVelocty(glm::vec2 velocity){
     this -> velocity = velocity;
 }
+
+void Paddle::restePosition(){
+    this -> pos.x = render -> getWidth()/2.0f - siz.x/2.0f;
+    this -> pos.y = render -> getHeight() - siz.y;
+}

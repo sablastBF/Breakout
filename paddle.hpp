@@ -13,6 +13,7 @@ public:
 
     void updatePos(glm::vec2, float time);
     void updateVelocty(glm::vec2 velocity);
-
+    void restePosition();
+    
 };  
 

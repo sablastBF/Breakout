@@ -7,7 +7,7 @@ Ball::Ball(float radius, string &text, shared_ptr<Renderer> r): GameObject(glm::
 
 // dodavanje novih lopta, namjenjeno je za vise lopta
 Ball::Ball(shared_ptr<Ball> b, glm::vec2 velocity){
-    this -> radius = b -> radius/1.2f;
+    this -> radius = b -> radius;
     this -> render = b -> render;
     this -> pos =  b -> pos;
     this -> siz = b -> siz/1.2f;
@@ -30,38 +30,6 @@ void Ball::updatePos(float dt){
     newPos = glm::clamp(newPos, glm::vec2(0.0f), glm::vec2( this -> render -> getWidth() - 2.0f*this -> radius,  this -> render -> getHeight()- 2.0f*this -> radius));
 
     this -> pos = newPos;
-    this -> path.push_back(this -> pos.x + this -> radius);
-    this -> path.push_back(this -> pos.y + this -> radius);
-}
-
-void Ball::drawLinePath(){  
-   // if (path.size() < 1000) return ;
-    cout << path.size() << endl;
-    this -> lineShader = Shader("shaders/lineShader.vs", "shaders/lineShader.fs");
-    this -> lineShader.use();
-    
-    glGenVertexArrays(1, &this -> lineVAO);
-    glBindVertexArray(this -> lineVAO);
-
-    glGenBuffers(1, &this -> lineVBO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, this -> lineVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(path)*sizeof(float)*100, path.data(), GL_STATIC_DRAW);
-
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);  
-
-    this -> lineShader.use();
-    this -> lineShader.setMat4("projection", this -> render -> getProjection());
-    
-    for (int i = 0; i < path.size() ;i+=2){
-        cout << i<<" " <<this -> path[i]<<" "<< path[i + 1]<<endl;
-    }
-
-    glBindVertexArray(this -> lineVAO);
-    glDrawArrays(GL_LINE_STRIP, 0, this -> path.size()/2);
-    glBindVertexArray(0);
 }
 
 
@@ -83,6 +51,8 @@ glm::vec2 Ball::getVelocrty(){return this ->velocty;}
 void Ball::setVelocrty(glm::vec2 velocty){this ->velocty = velocty;}
 
 
-void Ball::flipStuck(){ this -> stuck = false;}
+void Ball::setUnStuck(){ this -> stuck = false;}
+void Ball::setStuck(){ this -> stuck = true;}
+
 bool Ball::getStuck(){return this -> stuck;}
 

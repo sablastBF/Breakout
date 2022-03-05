@@ -8,6 +8,9 @@ void Brick::draw(){
 void Brick::setDistroid(){
     this -> destroid = true;
 }
+void Brick::resetDestroid(){
+    this -> destroid = false;
+}
 
 bool Brick::getDestroid(){
     return this -> destroid;
