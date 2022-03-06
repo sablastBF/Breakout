@@ -11,6 +11,7 @@ using namespace tinyxml2;
 
 void Level::draw(){
     this -> background -> draw();
+    this -> backgroundLevel -> draw();
     this -> paddle -> draw();
     for (shared_ptr<Brick> brick: this -> levelBrickLayout) brick -> draw();
 
@@ -98,12 +99,19 @@ void Level::loadLevelFromFile(string path){
         pathBackground = "textures/background/background.jpg";  
         cout <<"Background texture not found set to default."<<endl;
     }
-    this -> background = shared_ptr<GameObject>(new GameObject(glm::vec2(0.0f), glm::vec2(this -> render -> getWidth(), this -> render -> getHeight() ),pathBackground, this -> render));
 
-    float width_ =  static_cast<float>(this -> render -> getWidth())/ static_cast<float>(n);
-    float height_ = static_cast<float>(this -> render -> getHeight()) / (static_cast<float>(m));
-    double minSquare = min(width_, height_);
-    minSquare = minSquare;
+    string pathBackgroundLevel;
+    if (levelData->FindAttribute("BackgroundTextureLevel")){
+        pathBackgroundLevel = levelData->FindAttribute("BackgroundTextureLevel")->Value();
+    } else {
+        pathBackgroundLevel = "textures/background/background2.png";  
+    }
+    float p = 0.25f;
+    this -> background = shared_ptr<GameObject>(new GameObject(glm::vec2(0.0f), glm::vec2(this -> render -> getWidth()*p, this -> render -> getHeight() ),pathBackground, this -> render));
+    this -> backgroundLevel = shared_ptr<GameObject>(new GameObject(glm::vec2(this -> render -> getWidth()*p, 0.0f ), glm::vec2(this -> render -> getWidth()*(1.0f - p), this -> render -> getHeight() ),pathBackgroundLevel, this -> render));
+
+
+    
 
 // dodajemo vrste brkova
     XMLElement *brickS = levelData -> FirstChildElement("BrickTypes");
@@ -114,9 +122,13 @@ void Level::loadLevelFromFile(string path){
         brickS = brickS -> NextSiblingElement("BrickType");
     }
 
+   
+
     string levelOtline = levelData->FirstChildElement("Bricks")->GetText();
     vector<string> v;
     string levelID;
+
+    // ocisimo ga od bjelina
     for (int i = 0; i < levelOtline.length(); i++){
         if (levelOtline[i] == '\t' || levelOtline[i] == '\n'|| levelOtline[i] == ' '){
             if (!levelID.empty())
@@ -129,16 +141,24 @@ void Level::loadLevelFromFile(string path){
     if (!levelID.empty())
     v.push_back(levelID);
     
+
+
+    float width_ =  (1-p)*static_cast<float>(this -> render -> getWidth())/ static_cast<float>(n);
+    float height_ = 0.75*static_cast<float>(this -> render -> getHeight()) / (static_cast<float>(m));
+    // double minSquare = min(width_, height_);
+    // minSquare = minSquare;
     int k = 0;
-    int offset = this -> render -> getWidth() - minSquare*n;
-    offset/=2;
+    this -> offset = p*static_cast<float>(this -> render -> getWidth());
+    this -> balls[0] -> setOffset(this -> offset);
+    this -> paddle -> setOffset(this -> offset);
+
     for (double i = 0; i < m; i++){
         for (double j = 0; j < n; j++){
            if (this -> brick.find(v[k]) == this -> brick.end()) {k++;continue;}
            shared_ptr<Brick> br = shared_ptr<Brick>(new Brick(this -> brick[v[k++]]));
            if (!br -> getUndestrojable()) numberOfBricks++;
-           br -> setPos(glm::vec2( minSquare * j , minSquare * i ));
-           br -> setSiz(glm::vec2(minSquare -rowC ,minSquare - spacC));
+           br -> setPos(glm::vec2(offset + width_ * j , height_ * i ));
+           br -> setSiz(glm::vec2(width_ -rowC ,height_ - spacC));
            this -> levelBrickLayout.push_back(br);
         }
     } 

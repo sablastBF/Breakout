@@ -4,6 +4,7 @@
 	RowSpacing="3"
 	ColumnSpacing="3"
 	BackgroundTexture="textures/background/background2.png"
+	BackgroundTextureLevel="textures/background/blackbord.jpg"
 	PaddleTexture="textures/paddle/paddle.png"
 	BallTexture="textures/ball/ball.png"
 	LevelDifficulti="5"

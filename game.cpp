@@ -60,6 +60,7 @@ bool Game::RunLevel(string levelPath){
             this -> gameScore += (level -> getTezina()*1000.0f - currentFrame) + (level -> getNumberOfBalls() - 1) * 100;
             cout <<"YES"<<endl;
             cout <<"Score: "<< this -> gameScore << endl;
+            this -> level -> setBallPositionStuck();
             return true;
         }
         if (this -> level -> doesGameHaveBall()){
@@ -67,7 +68,7 @@ bool Game::RunLevel(string levelPath){
         }
 
         this -> TextRender ->  RenderText( "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-         this -> TextRender -> RenderText( "(C) LearnOpenGL.com", 0.0f, 570.0f, 1.0f, glm::vec3(0.3, 0.7f, 0.9f));
+        this -> TextRender -> RenderText( "(C) LearnOpenGL.com", 0.0f, 570.0f, 1.0f, glm::vec3(0.3, 0.7f, 0.9f));
        
         glfwSwapBuffers(window);
         glfwPollEvents();

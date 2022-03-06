@@ -14,12 +14,13 @@ Ball::Ball(shared_ptr<Ball> b, glm::vec2 velocity){
     this -> velocty = velocity;
     this -> textureID = b -> textureID;
     this -> stuck = false;
+    this -> offset = b -> offset;
 }
 
 bool Ball::updatePos(float dt){
     if (this -> stuck) return false;
     glm::vec2 newPos = this -> pos + this -> velocty * dt;
-    if (newPos.x < 0.0f || newPos.x + this -> radius*2.0f > this -> render -> getWidth()){
+    if (newPos.x < this -> offset || newPos.x + this -> radius*2.0f > this -> render -> getWidth()){
         this -> velocty.x = -this -> velocty.x ;
     }     
 
@@ -30,10 +31,13 @@ bool Ball::updatePos(float dt){
         return true;
     }
 
-    newPos = glm::clamp(newPos, glm::vec2(0.0f), glm::vec2( this -> render -> getWidth() - 2.0f*this -> radius,  this -> render -> getHeight()- 2.0f*this -> radius));
+    newPos = glm::clamp(newPos, glm::vec2(this -> offset, 0.0f), glm::vec2( this -> render -> getWidth() - 2.0f*this -> radius,  this -> render -> getHeight()- 2.0f*this -> radius));
 
     this -> pos = newPos;
     return false;    
+}
+void Ball::setOffset(float offset){
+    this -> offset = offset;
 }
 
 

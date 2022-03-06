@@ -3,7 +3,7 @@
 
 
 int main(){ 
-    unsigned int width_ = 1200, height_ = 1201/1.5;
+    unsigned int width_ = 800, height_ = 600;
     Game *brakeOut = new Game(width_,height_);
     brakeOut -> addLevel("levels/first.xml");
     brakeOut -> addLevel("levels/second.xml");

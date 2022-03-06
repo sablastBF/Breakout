@@ -16,11 +16,14 @@ private:
     vector<shared_ptr<Brick>> levelBrickLayout;
 
     shared_ptr<GameObject> background = nullptr;
+    shared_ptr<GameObject> backgroundLevel = nullptr;
+
     shared_ptr<Paddle> paddle = nullptr;
     vector<shared_ptr<Ball>> balls;
     unsigned int numberOfBalls = 1, numberOfBricks = 0;
     unsigned int numberOfBricksOriginal;
     unsigned int tezina = 1;
+    float offset;
     // tu bih trebao dodati lopti i padle, nekako mi je logicnije
 public:
     Level(string path, shared_ptr<Renderer> render);

@@ -9,6 +9,8 @@ class Ball: public GameObject{
         glm::vec2 velocty = glm::vec2(0.0f, -400.0f);
         float radius;
         bool stuck = true;
+        float offset = 0.0f;
+
     public:
 
     Ball(float radius, string &text, shared_ptr<Renderer> r);
@@ -24,6 +26,5 @@ class Ball: public GameObject{
     glm::vec2 getVelocrty();
     void setUnStuck();
     void setStuck();
-
-
+    void setOffset(float offset);
 };

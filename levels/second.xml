@@ -6,6 +6,7 @@
 	BackgroundTexture="textures/background/background2.png"
 	PaddleTexture="textures/paddle/paddle.png"
 	BallTexture="textures/ball/ball.png"
+	BackgroundTextureLevel="textures/background/blackbord.jpg"
   >
   <BrickTypes>
 
