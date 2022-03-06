@@ -14,6 +14,7 @@ class Brick : public GameObject
      bool destroid = false, undestrojable = false;
      string breakSound, hitSound;
      unsigned int addBalls = 0;
+     string id;
     
   public:
       Brick(shared_ptr<Brick> );
@@ -30,10 +31,14 @@ class Brick : public GameObject
       void setHit(unsigned int hit){this -> hitPoint = hit;}
       void setBreakScore(unsigned int breakScore){this -> breakScore = breakScore;}
       void setBreakSound(string bs){this -> breakSound = bs;}
+      void setId(string id){this -> id = id;}
+
       void setHitSound(string hs){this -> hitSound = hs;}
       void playHitSound(ISoundEngine * SoundEngine);
       void playBreakSound(ISoundEngine * SoundEngine);
 
       void resetDestroid();
-
+      string getId();
+      unsigned int gethitPoint();
+      void setHitPoint(unsigned int point);
  };

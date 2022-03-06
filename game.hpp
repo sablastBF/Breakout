@@ -11,6 +11,7 @@
 #include "ball.hpp"
 #include "paddle.hpp"
 #include "Rendere.hpp"
+#include "textRender.hpp"
 
 class Game
 {
@@ -25,7 +26,8 @@ private:
     vector<string> levels;
     ISoundEngine* SoundEngine = nullptr;
     GLFWwindow* window;
-    
+    shared_ptr<textRender> TextRender;
+
 public:
 
     Game(unsigned int width_, unsigned int height_);

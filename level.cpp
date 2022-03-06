@@ -7,7 +7,6 @@
 
 # define PI  3.14159265358979323846f
 
-
 using namespace tinyxml2;
 
 void Level::draw(){
@@ -53,6 +52,16 @@ void Level::loadLevelFromFile(string path){
     }
     this -> balls.push_back(shared_ptr<Ball>(new Ball(10.0f, ballTexture, this -> render)));
     this -> setBallPositionStuck();
+
+
+    if (levelData->FindAttribute("LevelDifficulti")){
+        levelData->FindAttribute("LevelDifficulti")->QueryUnsignedValue(&this -> tezina);
+    } else {
+        this -> tezina= 1;
+        cout <<"No LevelDifficulti sepecified. Set to 1."<<endl;
+    }
+
+
 
     if (levelData->FindAttribute("RowCount")){
         levelData->FindAttribute("RowCount")->QueryUnsignedValue(&m);
@@ -127,11 +136,14 @@ void Level::loadLevelFromFile(string path){
         for (double j = 0; j < n; j++){
            if (this -> brick.find(v[k]) == this -> brick.end()) {k++;continue;}
            shared_ptr<Brick> br = shared_ptr<Brick>(new Brick(this -> brick[v[k++]]));
+           if (!br -> getUndestrojable()) numberOfBricks++;
            br -> setPos(glm::vec2( minSquare * j , minSquare * i ));
            br -> setSiz(glm::vec2(minSquare -rowC ,minSquare - spacC));
            this -> levelBrickLayout.push_back(br);
         }
     } 
+
+    this -> numberOfBricksOriginal = numberOfBricks;
 }
 
 void Level::setBallPositionStuck(){
@@ -191,6 +203,7 @@ void Level::addBrick( XMLElement* brick){
     brk -> setBreakSound(soundPathBreak);
     brk -> setHitSound(soundPathHit);
     brk -> setNumberOfBalls(numberOfBalls);
+    brk -> setId(id);
     this -> brick[id] = brk;
 }
 
@@ -229,12 +242,26 @@ void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
 void Level::reste(){
     // resetira cigle
     for (shared_ptr<Brick> brk: levelBrickLayout){
-        brk -> resetDestroid();
+        if (brk -> getDestroid()){
+            brk -> resetDestroid();  
+                  
+            brk -> setHitPoint(brick[brk->getId()] -> gethitPoint());
+
+        }
+        //brk -> setHitPoint(brick[brk->getId()] -> gethitPoint());
     }
+    numberOfBricks = numberOfBricksOriginal;
+
     // lopte
     balls.resize(1);
     balls[0] -> setStuck();
-
+    numberOfBalls++;
+    paddle -> restePosition();
+    this -> setBallPositionStuck();
 }
 
-
+// mozda ako dode do bugova pa je <= 0
+bool Level::isGameWon(){return this -> numberOfBricks <= 0;}
+void Level::distorjBrick(){numberOfBricks--;}
+bool Level::doesGameHaveBall(){return numberOfBalls <= 0;}
+void Level::distorjBall(){numberOfBalls--;}

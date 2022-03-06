@@ -10,26 +10,30 @@ Ball::Ball(shared_ptr<Ball> b, glm::vec2 velocity){
     this -> radius = b -> radius;
     this -> render = b -> render;
     this -> pos =  b -> pos;
-    this -> siz = b -> siz/1.2f;
+    this -> siz = b -> siz;
     this -> velocty = velocity;
     this -> textureID = b -> textureID;
     this -> stuck = false;
 }
 
-void Ball::updatePos(float dt){
-    if (this -> stuck) return ;
+bool Ball::updatePos(float dt){
+    if (this -> stuck) return false;
     glm::vec2 newPos = this -> pos + this -> velocty * dt;
     if (newPos.x < 0.0f || newPos.x + this -> radius*2.0f > this -> render -> getWidth()){
         this -> velocty.x = -this -> velocty.x ;
     }     
 
-    if (newPos.y < 0.0f || newPos.y + this -> radius*2.0f > this -> render -> getHeight()){
-        this -> velocty.y = -this -> velocty.y;
-        
+    if (newPos.y < 0.0f){
+        this -> velocty.y = -this -> velocty.y; 
     }       
+    if (newPos.y + this -> radius*2.0f > this -> render -> getHeight()){
+        return true;
+    }
+
     newPos = glm::clamp(newPos, glm::vec2(0.0f), glm::vec2( this -> render -> getWidth() - 2.0f*this -> radius,  this -> render -> getHeight()- 2.0f*this -> radius));
 
     this -> pos = newPos;
+    return false;    
 }
 
 

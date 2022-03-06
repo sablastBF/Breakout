@@ -18,6 +18,8 @@ void Game::RunGame(){
     // radi sve stvari koje su potrebne za sve levele
     window = crateWindow( this -> width, this -> height);
     SoundEngine = createIrrKlangDevice();
+    TextRender = shared_ptr<textRender>(new textRender("fonts/AmaticSC-Regular.ttf" ,this -> width, this -> height));
+
 
     if (!window) return ;
     this  -> render = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
@@ -28,6 +30,8 @@ void Game::RunGame(){
     for (int i = 0 ; i < size; i++){
         gameState = this -> RunLevel(levels[i]);
     }
+
+    cout <<"WINNER" << endl;
 }
 
 bool Game::RunLevel(string levelPath){
@@ -35,11 +39,11 @@ bool Game::RunLevel(string levelPath){
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
-
+    float currentFrame = 0.0f;
     SoundEngine->play2D("audio/background/UA.mp3", true);
 
     while(!glfwWindowShouldClose(window)){
-        float currentFrame = glfwGetTime();
+        currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame; 
 
@@ -48,9 +52,23 @@ bool Game::RunLevel(string levelPath){
      
         processInput(window, deltaTime);
 
+
         this -> updatePos(deltaTime);
         this -> draw();
-      
+        if (this -> level -> isGameWon()){
+            cout << currentFrame << endl;
+            this -> gameScore += (level -> getTezina()*1000.0f - currentFrame) + (level -> getNumberOfBalls() - 1) * 100;
+            cout <<"YES"<<endl;
+            cout <<"Score: "<< this -> gameScore << endl;
+            return true;
+        }
+        if (this -> level -> doesGameHaveBall()){
+            this -> level -> reste();
+        }
+
+        this -> TextRender ->  RenderText( "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+         this -> TextRender -> RenderText( "(C) LearnOpenGL.com", 0.0f, 570.0f, 1.0f, glm::vec3(0.3, 0.7f, 0.9f));
+       
         glfwSwapBuffers(window);
         glfwPollEvents();
     }   
@@ -143,8 +161,14 @@ void  Game::updatePos(float dt){
     shared_ptr<Ball> b = nullptr;
     for (int i = 0; i < siz; i++){
         b = balls[i];
-        b -> updatePos(dt);
-
+        if (b -> updatePos(dt)){
+            this -> level -> distorjBall();
+            if (!this -> level -> doesGameHaveBall())
+            balls.erase(balls.begin() + i);
+            i--;siz--;
+            continue;
+        } 
+        
          if (this -> CheckCollision(b, paddle)){
             // uzmemo pozicju lopte, pozicju paddla 
             //ball -> changeVelocityY();
@@ -167,6 +191,7 @@ void  Game::updatePos(float dt){
                 
                     this -> gameScore += brks[i] -> getBreakScore();
                     brks[i] -> setDistroid();
+                    level -> distorjBrick();
                     brks[i] -> playBreakSound(SoundEngine);
                     level -> addBalls(b, brks[i] -> getNumberOfBalls());
                 } else {
@@ -176,7 +201,6 @@ void  Game::updatePos(float dt){
             }
         }
     }
-
 }
 
 // ovo tude treba ispraviti 

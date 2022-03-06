@@ -18,7 +18,9 @@ private:
     shared_ptr<GameObject> background = nullptr;
     shared_ptr<Paddle> paddle = nullptr;
     vector<shared_ptr<Ball>> balls;
-
+    unsigned int numberOfBalls = 1, numberOfBricks = 0;
+    unsigned int numberOfBricksOriginal;
+    unsigned int tezina = 1;
     // tu bih trebao dodati lopti i padle, nekako mi je logicnije
 public:
     Level(string path, shared_ptr<Renderer> render);
@@ -37,6 +39,11 @@ public:
     vector<shared_ptr<Ball> > & getBalls();
 
     void reste();
-    
+    bool isGameWon();
+    void distorjBrick();
+    void distorjBall();
+    bool doesGameHaveBall();
+    unsigned int getTezina(){return this -> tezina;}
+    unsigned int getNumberOfBalls(){return this -> numberOfBalls;}
 };
 

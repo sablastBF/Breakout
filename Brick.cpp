@@ -34,6 +34,7 @@ Brick::Brick(shared_ptr<Brick> b){
     this -> breakSound = b -> breakSound;
     this -> hitSound = b -> hitSound;
     this -> addBalls = b -> addBalls;
+    this -> id = b -> id;
 }
 
 
@@ -44,3 +45,9 @@ void Brick::playHitSound(ISoundEngine *SoundEngine){
 void Brick::playBreakSound(ISoundEngine * SoundEngine){
     SoundEngine->play2D(this -> breakSound.c_str(), false);
 }   
+
+
+unsigned int Brick::gethitPoint(){return this -> hitPoint;}
+void Brick::setHitPoint(unsigned int point){this -> hitPoint =point;}
+
+string Brick::getId(){return this -> id;}

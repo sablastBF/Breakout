@@ -14,7 +14,7 @@ class Ball: public GameObject{
     Ball(float radius, string &text, shared_ptr<Renderer> r);
     Ball(shared_ptr<Ball> b, glm::vec2 velocity);
 
-    void updatePos(float dt);
+    bool updatePos(float dt);
     bool getStuck();
     float getRadius();
     void changeVelocity();

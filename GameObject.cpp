@@ -51,7 +51,14 @@ void GameObject::loadTexture(string &path){
     int width, height, nrChannels;
     unsigned char *data = nullptr;
  
-    data = stbi_load(path.c_str(), &width, &height, &nrChannels, 4);
+
+   if (path.substr(path.find_last_of(".") + 1) == "png"){
+        data = stbi_load(path.c_str(), &width, &height, &nrChannels, 4);
+    }
+    else { 
+        data = stbi_load(path.c_str(), &width, &height, &nrChannels, 3);
+    }
+
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
