@@ -32,6 +32,12 @@ void Level::loadLevelFromFile(string path){
 
     XMLElement * levelData = levelXml.FirstChild()->ToElement();
 
+    if (levelData->FindAttribute("NumberOfLives")){
+        levelData->FindAttribute("NumberOfLives")->QueryUnsignedValue(&liveNumber);
+    } else {
+        liveNumber = 3;
+    }
+
     string paddleTexture;
     if (levelData->FindAttribute("PaddleTexture")){
         paddleTexture = levelData->FindAttribute("PaddleTexture")->Value();
@@ -259,6 +265,8 @@ void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
 }
 
 void Level::reste(){
+
+    liveNumber--;
     // resetira cigle
     for (shared_ptr<Brick> brk: levelBrickLayout){
         if (brk -> getDestroid()){

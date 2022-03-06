@@ -50,7 +50,7 @@ public:
 
     unsigned int getTezina(){return this -> tezina;}
     unsigned int getNumberOfBalls(){return this -> numberOfBalls;}
-    unsigned int getNumberOfBricks(){return this -> numberOfBricks;}
+    unsigned int getNumberOfBricks(){return this -> numberOfBricksOriginal;}
     unsigned int getNumberOFLives(){return liveNumber;}
     unsigned int getNumberOfDistroid(){return numberOfBricksOriginal -numberOfBricks;}
 };

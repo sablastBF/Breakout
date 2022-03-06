@@ -2,7 +2,7 @@
 
 #include "paddle.hpp"
 
-Paddle::Paddle(glm::vec2 siz,string &texture,  shared_ptr<Renderer> r)
+Paddle::Paddle(glm::vec2 siz,string texture,  shared_ptr<Renderer> r)
 :GameObject(glm::vec2(0.0f), siz,texture,r)
 {
 }

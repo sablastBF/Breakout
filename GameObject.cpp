@@ -14,13 +14,13 @@ GameObject::GameObject(string &texturePath, shared_ptr<Renderer> render){
     this -> render = render;
 }
 
-GameObject::GameObject( glm::vec2 siz, string &texturePath, shared_ptr<Renderer> render){
+GameObject::GameObject( glm::vec2 siz, string texturePath, shared_ptr<Renderer> render){
     this -> siz = siz;
     this -> loadTexture(texturePath);
     this -> render = render;
 }
 
-GameObject::GameObject(glm::vec2 pos, glm::vec2 siz, string &texturePath, shared_ptr<Renderer> render){
+GameObject::GameObject(glm::vec2 pos, glm::vec2 siz, string texturePath, shared_ptr<Renderer> render){
     this -> pos = pos;
     this -> siz = siz;
     this -> loadTexture(texturePath);

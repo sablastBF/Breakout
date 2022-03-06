@@ -5,7 +5,7 @@
 	ColumnSpacing="3"
 	BackgroundTextureLevel="textures/background/background2.png"
   BackgroundTexture="textures/background/blackbord.jpg"
-
+  NumberOfLives="5"
 	PaddleTexture="textures/paddle/paddle.png"
 	BallTexture="textures/ball/ball.png"
   >

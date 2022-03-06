@@ -13,10 +13,20 @@
 #include "Rendere.hpp"
 #include "textRender.hpp"
 
+
+enum GameState{
+    RUNLEVEL,
+    STARTSCREEN,
+    ENDSCREEN,
+    GAMEOVERSCREEN
+};
+
 class Game
 {
+   
 private:
-    glm::mat4 projection;
+    GameState gameState = STARTSCREEN;
+   // glm::mat4 projection;
     unsigned int width, height;
     shared_ptr<Level> level = nullptr;
     shared_ptr<Renderer> render = nullptr;
@@ -27,14 +37,14 @@ private:
     ISoundEngine* SoundEngine = nullptr;
     GLFWwindow* window;
     shared_ptr<textRender> TextRender;
-    unsigned int levelNumber = 0;
+    unsigned int curetLevel = 0;
+    float deltaTime;
 public:
 
     Game(unsigned int width_, unsigned int height_);
     ~Game(){SoundEngine -> drop();}
 
     static void framebuffer_size_callback(GLFWwindow* window, int width_, int height_);
-    void processInput(GLFWwindow *window, float dt);
     GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
     void draw();
     void updatePos(float dt);
@@ -42,6 +52,15 @@ public:
     bool CheckCollision(shared_ptr<GameObject> one, shared_ptr<GameObject> two); 
     void addLevel(string path);
     void RunGame();
-    bool RunLevel(string path);
+    void RunLevel(string path);
+
+    void RunStartScreen();
+    void RunEndScreen();
+    void RunGameOverScreen();
+    GameState getGameState();
+    shared_ptr<Level> getLevel(){return this -> level;}
+    void setGameState(GameState v);
+    float  getDeltaTime(){return this -> deltaTime;}
+
 };
 

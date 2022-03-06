@@ -1,7 +1,9 @@
 //#include <memory>
 #include "game.hpp"
-
+extern Game *brakeOut; /* Declaration of the variable */
 using namespace irrklang;
+
+void procesInput( GLFWwindow *window, int key, int scancode, int action, int mods );
 
 Game::Game(unsigned int width_, unsigned int height_){
     this -> width = width_;
@@ -13,6 +15,9 @@ void Game::addLevel(string pathToLevel){
     numberOfLevels++;
 }
 
+GameState Game::getGameState(){return this -> gameState;}
+void Game::setGameState(GameState v){this -> gameState = v;}
+
 // game manager, pokrece iduce levele, resetira levele...
 void Game::RunGame(){
     // radi sve stvari koje su potrebne za sve levele
@@ -20,70 +25,77 @@ void Game::RunGame(){
     SoundEngine = createIrrKlangDevice();
     TextRender = shared_ptr<textRender>(new textRender("fonts/AmaticSC-Regular.ttf" ,this -> width, this -> height));
 
-
     if (!window) return ;
     this  -> render = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
     this  -> brickRender = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
 
-    const unsigned int size = numberOfLevels;
-    bool gameState = 0;
-    for (int i = 0 ; i < size; i++){
-        gameState = this -> RunLevel(levels[i]);
+    curetLevel = 0;
+    glfwSetKeyCallback(window, procesInput);
+
+    while(!glfwWindowShouldClose(window)){
+        if (gameState == STARTSCREEN){
+            this -> RunStartScreen();
+        }
+
+        if (gameState == RUNLEVEL){ 
+            this -> RunLevel(levels[curetLevel++]);   
+
+            if (gameState == RUNLEVEL && curetLevel == numberOfLevels) gameState = ENDSCREEN;
+        }
+
+        if (gameState == GAMEOVERSCREEN){ 
+            this -> RunGameOverScreen();   
+        }
+
+        if (gameState == ENDSCREEN){ 
+            this -> RunEndScreen();   
+        }
     }
 
-    cout <<"WINNER" << endl;
 }
 
-bool Game::RunLevel(string levelPath){
+void Game::RunLevel(string levelPath){
     this -> level = shared_ptr<Level>(new Level(levelPath,  this -> render));
 
-    float deltaTime = 0.0f;
     float lastFrame = 0.0f;
     float currentFrame = 0.0f;
     SoundEngine->play2D("audio/background/UA.mp3", true);
-
-
 
     string sc;
     string numberOfBalls, numberOfBrick, lives;
     string levelNumber, numberOfDistroid;
 
-    while(!glfwWindowShouldClose(window)){
+    while(gameState == RUNLEVEL && !glfwWindowShouldClose(window)){
         currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame; 
+        lastFrame = currentFrame;        
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
      
-        processInput(window, deltaTime);
-
 
         this -> updatePos(deltaTime);
         this -> draw();
         if (this -> level -> isGameWon()){
-            cout << currentFrame << endl;
             this -> gameScore += (level -> getTezina()*1000.0f - currentFrame) + (level -> getNumberOfBalls() - 1) * 100;
-            cout <<"YES"<<endl;
-            cout <<"Score: "<< this -> gameScore << endl;
             this -> level -> setBallPositionStuck();
-            return true;
+            return ;
         }
         if (this -> level -> doesGameHaveBall()){
-         
             this -> level -> reste();
+            if (this -> level -> getNumberOFLives() == 0) gameState = GAMEOVERSCREEN;
         }
 
         sc = to_string(this -> gameScore);
         numberOfBalls = to_string(this -> level -> getNumberOfBalls());
         numberOfBrick = to_string(this -> level -> getNumberOfBricks());
         numberOfDistroid = to_string(this -> level -> getNumberOfDistroid());
-        levelNumber = to_string(this -> levelNumber);
+        levelNumber = to_string(curetLevel + 1);
         lives = to_string(this->level -> getNumberOFLives());
         float k = 0.0f;
         float of = 5.0f;
         this -> TextRender ->  RenderText( "Score: "+sc, 5.0f, of+60.0f * (k++), 1.0f, glm::vec3(1.0f));
-        this -> TextRender ->  RenderText( "Level: "+sc, 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Level: "+levelNumber, 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f));
         this -> TextRender ->  RenderText( "Balls: "+numberOfBalls, 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f));
 
         this -> TextRender ->  RenderText( numberOfDistroid +" / " +  numberOfBrick  , 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f)); 
@@ -94,35 +106,6 @@ bool Game::RunLevel(string levelPath){
         glfwSwapBuffers(window);
         glfwPollEvents();
     }   
-
-    return false;
-}
-
-
-void Game::processInput(GLFWwindow *window, float deltaTime)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    shared_ptr<Paddle> paddle = this -> level -> getPaddle();
-    shared_ptr<Ball> ball = this -> level -> getBall();
-
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-        paddle -> updatePos(glm::vec2(-1.0f,0.0f),deltaTime);
-        if (ball -> getStuck()){
-            this -> level -> setBallPositionStuck();
-        }
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-        paddle -> updatePos(glm::vec2(1.0f,0.0f),deltaTime);
-        if (ball -> getStuck()){
-            this -> level -> setBallPositionStuck();
-        }
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
-        ball -> setUnStuck();
-    }
 }
 
 void Game::draw(){
@@ -136,7 +119,7 @@ GLFWwindow*  Game::crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Moj Lomljenje Van", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "", NULL, NULL);
     if (window == NULL)
     {
         glfwTerminate();
@@ -162,6 +145,45 @@ void Game::framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+//STARTSCREEN
+void Game::RunStartScreen(){
+
+    SoundEngine->play2D("audio/background/UA.mp3", true);
+
+    while(gameState == STARTSCREEN && !glfwWindowShouldClose(window)){
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        this -> TextRender ->  RenderText( "BRAKEOUT", 5.0f, 60.0f, 1.0f, glm::vec3(1.0f));
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();   
+    }
+}
+
+void Game::RunEndScreen(){
+    SoundEngine->play2D("audio/background/UA.mp3", true);
+    while(gameState == ENDSCREEN && !glfwWindowShouldClose(window)){
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        this -> TextRender ->  RenderText( "WICTORY", 5.0f, 60.0f, 1.0f, glm::vec3(1.0f));
+        glfwSwapBuffers(window);
+        glfwPollEvents();   
+    }
+}
+
+void Game::RunGameOverScreen(){
+
+    SoundEngine->play2D("audio/background/UA.mp3", true);
+    while(gameState == GAMEOVERSCREEN && !glfwWindowShouldClose(window)){
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        this -> TextRender ->  RenderText( "GameOVER", 5.0f, 60.0f, 1.0f, glm::vec3(1.0f));
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();   
+    }
+}
 
 
 bool Game::CheckCollision(shared_ptr<GameObject> one, shared_ptr<GameObject> two) // AABB - AABB collision
@@ -286,3 +308,38 @@ bool Game::CheckCollision(shared_ptr<Ball> ball, shared_ptr<GameObject> two)
     return true;
 } 
 
+
+void procesInput( GLFWwindow *window, int key, int scancode, int action, int mods ){
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, true);
+
+    float deltaTime = brakeOut -> getDeltaTime();
+    if (brakeOut -> getGameState() == STARTSCREEN){
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
+            brakeOut->setGameState(RUNLEVEL);
+        }
+
+    } else if (brakeOut -> getGameState() == RUNLEVEL){
+        shared_ptr<Level> level = brakeOut -> getLevel();
+        shared_ptr<Paddle> paddle = level -> getPaddle();
+        shared_ptr<Ball> ball = level -> getBall();
+        cout << key << endl;
+        if (key == GLFW_KEY_LEFT){
+            paddle -> updatePos(glm::vec2(-1.0f,0.0f), 2*deltaTime);
+            if (ball -> getStuck()){
+                level -> setBallPositionStuck();
+            }
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+            paddle -> updatePos(glm::vec2(1.0f,0.0f), 2*deltaTime);
+            if (ball -> getStuck()){
+                level -> setBallPositionStuck();
+            }
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
+            ball -> setUnStuck();
+        }
+    } 
+}

@@ -13,8 +13,8 @@ protected:
 public:
     GameObject();
     GameObject(string &textureID, shared_ptr<Renderer> render);
-    GameObject( glm::vec2 siz, string &textureID, shared_ptr<Renderer> render);
-    GameObject(glm::vec2 pos, glm::vec2 siz, string &textureID, shared_ptr<Renderer> render);
+    GameObject( glm::vec2 siz, string textureID, shared_ptr<Renderer> render);
+    GameObject(glm::vec2 pos, glm::vec2 siz, string textureID, shared_ptr<Renderer> render);
     GameObject(shared_ptr<GameObject>);
     ~GameObject(){};
     void draw();
