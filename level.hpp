@@ -24,6 +24,7 @@ private:
     unsigned int numberOfBricksOriginal;
     unsigned int tezina = 1;
     float offset;
+    unsigned int liveNumber = 0;
     // tu bih trebao dodati lopti i padle, nekako mi je logicnije
 public:
     Level(string path, shared_ptr<Renderer> render);
@@ -46,7 +47,11 @@ public:
     void distorjBrick();
     void distorjBall();
     bool doesGameHaveBall();
+
     unsigned int getTezina(){return this -> tezina;}
     unsigned int getNumberOfBalls(){return this -> numberOfBalls;}
+    unsigned int getNumberOfBricks(){return this -> numberOfBricks;}
+    unsigned int getNumberOFLives(){return liveNumber;}
+    unsigned int getNumberOfDistroid(){return numberOfBricksOriginal -numberOfBricks;}
 };
 

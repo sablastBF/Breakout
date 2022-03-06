@@ -42,6 +42,12 @@ bool Game::RunLevel(string levelPath){
     float currentFrame = 0.0f;
     SoundEngine->play2D("audio/background/UA.mp3", true);
 
+
+
+    string sc;
+    string numberOfBalls, numberOfBrick, lives;
+    string levelNumber, numberOfDistroid;
+
     while(!glfwWindowShouldClose(window)){
         currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -64,12 +70,27 @@ bool Game::RunLevel(string levelPath){
             return true;
         }
         if (this -> level -> doesGameHaveBall()){
+         
             this -> level -> reste();
         }
 
-        this -> TextRender ->  RenderText( "This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-        this -> TextRender -> RenderText( "(C) LearnOpenGL.com", 0.0f, 570.0f, 1.0f, glm::vec3(0.3, 0.7f, 0.9f));
-       
+        sc = to_string(this -> gameScore);
+        numberOfBalls = to_string(this -> level -> getNumberOfBalls());
+        numberOfBrick = to_string(this -> level -> getNumberOfBricks());
+        numberOfDistroid = to_string(this -> level -> getNumberOfDistroid());
+        levelNumber = to_string(this -> levelNumber);
+        lives = to_string(this->level -> getNumberOFLives());
+        float k = 0.0f;
+        float of = 5.0f;
+        this -> TextRender ->  RenderText( "Score: "+sc, 5.0f, of+60.0f * (k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Level: "+sc, 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Balls: "+numberOfBalls, 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f));
+
+        this -> TextRender ->  RenderText( numberOfDistroid +" / " +  numberOfBrick  , 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f)); 
+        this -> TextRender ->  RenderText( "Brick: ", 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f)); 
+
+        this -> TextRender ->  RenderText( "Lives: "+lives, 5.0f,   this -> render -> getHeight() - 60.0f, 1.0f, glm::vec3(1.0f));
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }   
@@ -205,7 +226,6 @@ void  Game::updatePos(float dt){
 }
 
 // ovo tude treba ispraviti 
-
 bool Game::CheckCollision(shared_ptr<Ball> ball, shared_ptr<GameObject> two) 
 {
 

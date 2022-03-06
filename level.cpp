@@ -24,7 +24,7 @@ void Level::draw(){
 void Level::loadLevelFromFile(string path){
 
     unsigned int n = 20, m = 20;
-    unsigned int spacC = 20, rowC = 20;
+    unsigned int spacC = 0, rowC = 0;
 
     string pathBackground;
     XMLDocument levelXml;
@@ -51,6 +51,8 @@ void Level::loadLevelFromFile(string path){
         ballTexture = "textures/ball/ball.png";
         cout <<"Background texture not found set to default."<<endl;
     }
+
+
     this -> balls.push_back(shared_ptr<Ball>(new Ball(10.0f, ballTexture, this -> render)));
     this -> setBallPositionStuck();
 
@@ -62,19 +64,15 @@ void Level::loadLevelFromFile(string path){
         cout <<"No LevelDifficulti sepecified. Set to 1."<<endl;
     }
 
-
-
     if (levelData->FindAttribute("RowCount")){
         levelData->FindAttribute("RowCount")->QueryUnsignedValue(&m);
     } else {
-        m = 20;
         cout <<"RowCount Not Found set to default value."<<endl;
     }
 
     if (levelData->FindAttribute("ColumnCount")){
         levelData->FindAttribute("ColumnCount")->QueryUnsignedValue(&n);
     } else {
-        n = 20;
         cout <<"ColumnCount Not Found set to default value."<<endl;
     }
 
@@ -82,14 +80,12 @@ void Level::loadLevelFromFile(string path){
     if (levelData->FindAttribute("RowSpacing")){
         levelData->FindAttribute("RowSpacing")->QueryUnsignedValue(&rowC);
     } else {
-        rowC = 0;
         cout <<"RowSpacing Not Found set to default value."<<endl;
     }
 
     if (levelData->FindAttribute("ColumnSpacing")){
         levelData->FindAttribute("ColumnSpacing")->QueryUnsignedValue(&spacC);
     } else {
-        spacC = 0;
         cout <<"ColumnSpacing Not Found set to default value."<<endl;
     }
 
@@ -150,7 +146,9 @@ void Level::loadLevelFromFile(string path){
     int k = 0;
     this -> offset = p*static_cast<float>(this -> render -> getWidth());
     this -> balls[0] -> setOffset(this -> offset);
-    this -> paddle -> setOffset(this -> offset);
+    this -> paddle -> setOffset(this -> offset); 
+    this -> paddle -> restePosition();
+    this -> setBallPositionStuck();
 
     for (double i = 0; i < m; i++){
         for (double j = 0; j < n; j++){
@@ -255,6 +253,7 @@ void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
         shared_ptr<Ball> b = shared_ptr<Ball>(new Ball(ball, v));
         this -> balls.push_back(b);
     }
+    this -> numberOfBalls += N;
     // ball -> textureID;
     // shared_ptr<Ball> b =  shared_ptr(new Ball(ball -> textureID));
 }

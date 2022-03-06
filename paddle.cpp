@@ -3,7 +3,7 @@
 #include "paddle.hpp"
 
 Paddle::Paddle(glm::vec2 siz,string &texture,  shared_ptr<Renderer> r)
-:GameObject(glm::vec2( r-> getWidth()/2.0f - siz.x/2.0f,  r-> getHeight() - siz.y), siz,texture,r)
+:GameObject(glm::vec2(0.0f), siz,texture,r)
 {
 }
 
@@ -17,7 +17,7 @@ void Paddle::updateVelocty(glm::vec2 velocity){
 }
 
 void Paddle::restePosition(){
-    this -> pos.x = render -> getWidth()/2.0f - siz.x/2.0f;
+    this -> pos.x = (render -> getWidth()+this -> offset)/2.0f - siz.x/2.0f;
     this -> pos.y = render -> getHeight() - siz.y;
 }
 

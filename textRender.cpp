@@ -117,7 +117,6 @@ void textRender::RenderText(string text, float x, float y, float scale, glm::vec
 
         float xpos = x + ch.Bearing.x * scale;
         float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
-
         float w = ch.Size.x * scale;
         float h = ch.Size.y * scale;
         // update VBO for each character

@@ -27,7 +27,7 @@ private:
     ISoundEngine* SoundEngine = nullptr;
     GLFWwindow* window;
     shared_ptr<textRender> TextRender;
-
+    unsigned int levelNumber = 0;
 public:
 
     Game(unsigned int width_, unsigned int height_);
