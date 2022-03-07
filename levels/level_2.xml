@@ -1,5 +1,5 @@
 <Level
-	RowCount="23"
+	RowCount="25"
 	ColumnCount="25"
 	RowSpacing="3"
 	ColumnSpacing="3"
@@ -41,30 +41,30 @@
   </BrickTypes>
 
   <Bricks>
-    G S G S G S G S G S G S G S G S G S G S G S G
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ 
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
-    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _   
-    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M     
+    G S G S G S G S G S G S G S G S G S G S G S G S G
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ 
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M 
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ 
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M 
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ 
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M  
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ 
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M 
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M 
+    _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _  
+    M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M _ M   
   </Bricks>
 </Level>
