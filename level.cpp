@@ -264,16 +264,19 @@ void Level::addBalls(shared_ptr<Ball> ball,unsigned int N){
     // shared_ptr<Ball> b =  shared_ptr(new Ball(ball -> textureID));
 }
 
+void Level::decreseLive(){
+    this -> liveNumber--;
+}
+
 void Level::reste(){
 
-    liveNumber--;
     // resetira cigle
     for (shared_ptr<Brick> brk: levelBrickLayout){
         if (brk -> getDestroid()){
             brk -> resetDestroid();  
-                  
+            
             brk -> setHitPoint(brick[brk->getId()] -> gethitPoint());
-
+            
         }
         //brk -> setHitPoint(brick[brk->getId()] -> gethitPoint());
     }
@@ -282,7 +285,7 @@ void Level::reste(){
     // lopte
     balls.resize(1);
     balls[0] -> setStuck();
-    numberOfBalls++;
+    numberOfBalls = 1;
     paddle -> restePosition();
     this -> setBallPositionStuck();
 }

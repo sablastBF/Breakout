@@ -12,7 +12,6 @@ void Renderer::draw(glm::vec2 pos,glm::vec2 siz,  unsigned int textureID){
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     this -> brickShader.use();
-
     this -> brickShader.setMat4("model", glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(pos, 0.0f)), glm::vec3(siz, 0.0f)));
     this -> brickShader.setMat4("projection", this -> projection);
 
@@ -80,8 +79,4 @@ unsigned int Renderer::getWidth(){
     return this -> width;
 }
 
-// void Renderer::setSize(unsigned int width,unsigned int height ){
-//     this -> width = width;
-//     this -> height = height;
-// }
 

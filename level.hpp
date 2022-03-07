@@ -28,7 +28,6 @@ private:
     // tu bih trebao dodati lopti i padle, nekako mi je logicnije
 public:
     Level(string path, shared_ptr<Renderer> render);
-    Level(string path, unsigned int textureID,shared_ptr<Renderer> render, shared_ptr<Renderer> BrickRender);
 
     ~Level(){};
     void draw();
@@ -47,6 +46,7 @@ public:
     void distorjBrick();
     void distorjBall();
     bool doesGameHaveBall();
+    void decreseLive();
 
     unsigned int getTezina(){return this -> tezina;}
     unsigned int getNumberOfBalls(){return this -> numberOfBalls;}

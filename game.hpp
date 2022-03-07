@@ -30,21 +30,25 @@ private:
     unsigned int width, height;
     shared_ptr<Level> level = nullptr;
     shared_ptr<Renderer> render = nullptr;
-    shared_ptr<Renderer> brickRender = nullptr;
     unsigned int numberOfLevels = 0;
     unsigned int gameScore = 0;
+    unsigned int gameScoreCurrent = 0;
     vector<string> levels;
     ISoundEngine* SoundEngine = nullptr;
     GLFWwindow* window;
     shared_ptr<textRender> TextRender;
     unsigned int curetLevel = 0;
     float deltaTime;
+    bool drawGameInfoFlag;
+
 public:
 
     Game(unsigned int width_, unsigned int height_);
     ~Game(){SoundEngine -> drop();}
 
     static void framebuffer_size_callback(GLFWwindow* window, int width_, int height_);
+    void procesInputForPaddle( GLFWwindow *window);
+
     GLFWwindow*  crateWindow(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
     void draw();
     void updatePos(float dt);
@@ -60,7 +64,10 @@ public:
     GameState getGameState();
     shared_ptr<Level> getLevel(){return this -> level;}
     void setGameState(GameState v);
-    float  getDeltaTime(){return this -> deltaTime;}
-
+    void drawGameInfo();
+    void setdrawGameInfoFlag(bool b = false){this -> drawGameInfoFlag = b;}
+    void setgameScoreCurrent(unsigned int t){this -> gameScoreCurrent = t;}
+    void setgameScore(unsigned int t){this -> gameScore = t;}
+    void setcuretLevel(int curLvl){this -> curetLevel = curLvl;}
 };
 

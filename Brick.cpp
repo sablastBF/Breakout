@@ -3,6 +3,7 @@
 void Brick::draw(){
     if (this -> destroid) return ;
     GameObject::draw();
+    
 }
 
 void Brick::setDistroid(){
@@ -45,7 +46,6 @@ void Brick::playHitSound(ISoundEngine *SoundEngine){
 void Brick::playBreakSound(ISoundEngine * SoundEngine){
     SoundEngine->play2D(this -> breakSound.c_str(), false);
 }   
-
 
 unsigned int Brick::gethitPoint(){return this -> hitPoint;}
 void Brick::setHitPoint(unsigned int point){this -> hitPoint =point;}

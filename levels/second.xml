@@ -32,7 +32,7 @@
     <BrickType
 			Id="H"
 			Texture="textures/brick/brick_strong.png"
-			HitPoints="3"
+			HitPoints="20"
 			HitSound="audio/bricks/Meseg.wav"
 			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="150" />
@@ -47,6 +47,6 @@
   </BrickTypes>
 
   <Bricks>
-    I I 
+    I H
   </Bricks>
 </Level>

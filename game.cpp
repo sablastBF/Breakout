@@ -1,9 +1,11 @@
 //#include <memory>
 #include "game.hpp"
-extern Game *brakeOut; /* Declaration of the variable */
 using namespace irrklang;
+extern Game *brakeOut; /* Declaration of the variable */
+
 
 void procesInput( GLFWwindow *window, int key, int scancode, int action, int mods );
+
 
 Game::Game(unsigned int width_, unsigned int height_){
     this -> width = width_;
@@ -27,10 +29,10 @@ void Game::RunGame(){
 
     if (!window) return ;
     this  -> render = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
-    this  -> brickRender = shared_ptr<Renderer>(new Renderer( this -> width, this -> height,"shaders/basic_brick.vs","shaders/basic_brick.fs" ));
 
     curetLevel = 0;
     glfwSetKeyCallback(window, procesInput);
+
 
     while(!glfwWindowShouldClose(window)){
         if (gameState == STARTSCREEN){
@@ -65,10 +67,13 @@ void Game::RunLevel(string levelPath){
     string numberOfBalls, numberOfBrick, lives;
     string levelNumber, numberOfDistroid;
 
+    drawGameInfoFlag = 1;
+
     while(gameState == RUNLEVEL && !glfwWindowShouldClose(window)){
         currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;        
+        procesInputForPaddle(this -> window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -77,16 +82,20 @@ void Game::RunLevel(string levelPath){
         this -> updatePos(deltaTime);
         this -> draw();
         if (this -> level -> isGameWon()){
+            this -> gameScore += gameScoreCurrent;
+            gameScoreCurrent= 0;
             this -> gameScore += (level -> getTezina()*1000.0f - currentFrame) + (level -> getNumberOfBalls() - 1) * 100;
             this -> level -> setBallPositionStuck();
             return ;
         }
         if (this -> level -> doesGameHaveBall()){
+            gameScoreCurrent = 0;
             this -> level -> reste();
+            this -> level -> decreseLive();
             if (this -> level -> getNumberOFLives() == 0) gameState = GAMEOVERSCREEN;
         }
 
-        sc = to_string(this -> gameScore);
+        sc = to_string(this -> gameScore + gameScoreCurrent);
         numberOfBalls = to_string(this -> level -> getNumberOfBalls());
         numberOfBrick = to_string(this -> level -> getNumberOfBricks());
         numberOfDistroid = to_string(this -> level -> getNumberOfDistroid());
@@ -100,12 +109,23 @@ void Game::RunLevel(string levelPath){
 
         this -> TextRender ->  RenderText( numberOfDistroid +" / " +  numberOfBrick  , 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f)); 
         this -> TextRender ->  RenderText( "Brick: ", 5.0f,   of+60.0f * (k++), 1.0f, glm::vec3(1.0f)); 
-
         this -> TextRender ->  RenderText( "Lives: "+lives, 5.0f,   this -> render -> getHeight() - 60.0f, 1.0f, glm::vec3(1.0f));
+
+        if (drawGameInfoFlag){
+            drawGameInfo();
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }   
+}
+
+void Game::drawGameInfo(){
+    int k = 3;
+    this -> TextRender ->  RenderText( "Press Space to play" , this -> render -> getWidth() /2.0f, this -> render -> getHeight() - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+    this -> TextRender ->  RenderText( "LEFT & RIGHT ARROW TO MOVE " , this -> render -> getWidth() /2.0f, this -> render -> getHeight()  - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+    this -> TextRender ->  RenderText( "R TO RESET " , this -> render -> getWidth() /2.0f, this -> render -> getHeight()  - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+    this -> TextRender ->  RenderText( "ESC TO QUIT " , this -> render -> getWidth() /2.0f, this -> render -> getHeight()  - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
 }
 
 void Game::draw(){
@@ -153,9 +173,10 @@ void Game::RunStartScreen(){
     while(gameState == STARTSCREEN && !glfwWindowShouldClose(window)){
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
-        this -> TextRender ->  RenderText( "BRAKEOUT", 5.0f, 60.0f, 1.0f, glm::vec3(1.0f));
-
+        int k = 1;
+        this -> TextRender ->  RenderText( "BRAKEOUT BY BARBA", 5.0f, 60.0f, 1.5f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Press Space to play" , 5.0f, this -> render -> getHeight() - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "ESC TO QUIT " , 5.0f, this -> render -> getHeight()  - 60.0f*(k++), 0.5f, glm::vec3(1.0f));
         glfwSwapBuffers(window);
         glfwPollEvents();   
     }
@@ -184,7 +205,6 @@ void Game::RunGameOverScreen(){
         glfwPollEvents();   
     }
 }
-
 
 bool Game::CheckCollision(shared_ptr<GameObject> one, shared_ptr<GameObject> two) // AABB - AABB collision
 {   
@@ -233,7 +253,7 @@ void  Game::updatePos(float dt){
             if (this -> CheckCollision(b, brks[i])){
                 if (brks[i] -> getUndestrojable() == false && brks[i] -> chechHit() ){
                 
-                    this -> gameScore += brks[i] -> getBreakScore();
+                    this -> gameScoreCurrent += brks[i] -> getBreakScore();
                     brks[i] -> setDistroid();
                     level -> distorjBrick();
                     brks[i] -> playBreakSound(SoundEngine);
@@ -308,38 +328,68 @@ bool Game::CheckCollision(shared_ptr<Ball> ball, shared_ptr<GameObject> two)
     return true;
 } 
 
-
-void procesInput( GLFWwindow *window, int key, int scancode, int action, int mods ){
+void Game::procesInputForPaddle( GLFWwindow *window){
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, true);
-
-    float deltaTime = brakeOut -> getDeltaTime();
-    if (brakeOut -> getGameState() == STARTSCREEN){
-        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
-            brakeOut->setGameState(RUNLEVEL);
-        }
-
-    } else if (brakeOut -> getGameState() == RUNLEVEL){
-        shared_ptr<Level> level = brakeOut -> getLevel();
+        glfwSetWindowShouldClose(window, true);
+        
+    if (this -> gameState == RUNLEVEL){
         shared_ptr<Paddle> paddle = level -> getPaddle();
-        shared_ptr<Ball> ball = level -> getBall();
-        cout << key << endl;
-        if (key == GLFW_KEY_LEFT){
-            paddle -> updatePos(glm::vec2(-1.0f,0.0f), 2*deltaTime);
+        shared_ptr<Ball> ball = level -> getBall();int state = glfwGetKey(window, GLFW_KEY_E);
+
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+            paddle -> updatePos(glm::vec2(-1.0f,0.0f), deltaTime);
             if (ball -> getStuck()){
                 level -> setBallPositionStuck();
             }
+            this -> drawGameInfoFlag = 0;
         }
 
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-            paddle -> updatePos(glm::vec2(1.0f,0.0f), 2*deltaTime);
+            paddle -> updatePos(glm::vec2(1.0f,0.0f), deltaTime);
             if (ball -> getStuck()){
                 level -> setBallPositionStuck();
             }
+            this -> drawGameInfoFlag = 0;
+        }
+    }
+}
+
+void procesInput( GLFWwindow *window, int key, int scancode, int action, int mods ){
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    if (brakeOut -> getGameState() == STARTSCREEN){
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
+            brakeOut->setGameState(RUNLEVEL);
+            brakeOut -> setdrawGameInfoFlag(0);
         }
 
+    } else if (brakeOut -> getGameState() == RUNLEVEL){
+        shared_ptr<Ball> ball =  brakeOut -> getLevel() -> getBall();
         if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
             ball -> setUnStuck();
+            brakeOut -> setdrawGameInfoFlag(0);
         }
-    } 
+        // reset
+        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS){
+            brakeOut -> setgameScoreCurrent(0);
+            brakeOut -> getLevel() -> reste();
+        }
+    } else if (brakeOut -> getGameState() == ENDSCREEN){
+        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS){
+            brakeOut->setGameState(STARTSCREEN);
+            brakeOut->setcuretLevel(0);
+            brakeOut->setgameScoreCurrent(0);
+            brakeOut->setgameScore(0);
+
+        }
+     } else if (brakeOut -> getGameState() == GAMEOVERSCREEN){
+        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS){
+            brakeOut->setGameState(STARTSCREEN);
+            brakeOut->setcuretLevel(0);
+            brakeOut->setgameScoreCurrent(0);
+            brakeOut->setgameScore(0);
+        }
+    }
 }
+
