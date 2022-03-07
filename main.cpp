@@ -7,9 +7,9 @@ int main(){
     brakeOut = new Game(width_,height_);
 
     brakeOut -> addLevel("levels/level_1.xml");
-    // brakeOut -> addLevel("levels/level_2.xml");
-    // brakeOut -> addLevel("levels/level_3.xml");
-    // brakeOut -> addLevel("levels/level_4.xml");
+    brakeOut -> addLevel("levels/level_2.xml");
+    brakeOut -> addLevel("levels/level_3.xml");
+    brakeOut -> addLevel("levels/level_4.xml");
     brakeOut -> addLevel("levels/level_5.xml");
 
     // brakeOut -> addLevel("levels/second.xml");

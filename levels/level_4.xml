@@ -3,7 +3,7 @@
 	ColumnCount="21"
 	RowSpacing="3"
 	ColumnSpacing="3"
-	BackgroundTextureLevel="textures/background/background2.png"
+	BackgroundTextureLevel="textures/background/background.png"
   BackgroundTexture="textures/background/blackbord.jpg"
   NumberOfLives="5"
 	PaddleTexture="textures/paddle/paddle.png"
@@ -14,7 +14,7 @@
     <!-- Gift Brick -->
     <BrickType
 			Id="G"
-			Texture="textures/brick/bre.jpg"
+			Texture="textures/brick/brick_gift.png"
 			HitPoints="1"
 			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="50"
@@ -33,7 +33,7 @@
     <!-- Hard Brick -->
     <BrickType
 			Id="H"
-			Texture="textures/brick/brick_strong.png"
+			Texture="textures/brick/bric_hard.png"
 			HitPoints="3"
 			HitSound="audio/bricks/Meseg.wav"
 			BreakSound="audio/bricks/Meseg.wav"

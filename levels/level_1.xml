@@ -3,7 +3,7 @@
 	ColumnCount="23"
 	RowSpacing="3"
 	ColumnSpacing="3"
-	BackgroundTextureLevel="textures/background/math_2.jpeg"
+	BackgroundTextureLevel="textures/background/background.png"
   BackgroundTexture="textures/background/blackbord.jpg"
   NumberOfLives="5"
 	PaddleTexture="textures/paddle/paddle.png"
