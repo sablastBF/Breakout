@@ -1,0 +1,71 @@
+<Level
+	RowCount="18"
+	ColumnCount="21"
+	RowSpacing="3"
+	ColumnSpacing="3"
+	BackgroundTextureLevel="textures/background/background2.png"
+  BackgroundTexture="textures/background/blackbord.jpg"
+  NumberOfLives="5"
+	PaddleTexture="textures/paddle/paddle.png"
+	BallTexture="textures/ball/ball.png"
+  LevelDifficulti="4"
+  >
+  <BrickTypes>
+    <!-- Gift Brick -->
+    <BrickType
+			Id="G"
+			Texture="textures/brick/bre.jpg"
+			HitPoints="1"
+			BreakSound="audio/bricks/Meseg.wav"
+			BreakScore="50"
+      AddBalls="20"/>
+
+    <!-- Medium Brick -->
+    <BrickType
+			Id="M"
+			Texture="textures/brick/brick_happy.png"
+			HitPoints="1"
+			HitSound="audio/bricks/Meseg.wav"
+			BreakSound="audio/bricks/Meseg.wav"
+			BreakScore="500"
+      />
+
+    <!-- Hard Brick -->
+    <BrickType
+			Id="H"
+			Texture="textures/brick/brick_strong.png"
+			HitPoints="3"
+			HitSound="audio/bricks/Meseg.wav"
+			BreakSound="audio/bricks/Meseg.wav"
+			BreakScore="150" />
+
+    <!-- Solid Impenetrable Brick -->
+    <BrickType
+			Id="S"
+			Texture="textures/brick/shild.png"
+			HitPoints="Infinite"
+			HitSound="audio/bricks/metal3.wav" />
+
+  </BrickTypes>
+
+  <Bricks>
+    M M M M M M M M M M M M M M M M M M M M M  
+    M M M M M M M M M M M M M M M M M M M M M 
+    M M M M M M M M M M M M M M M M M M M M M  
+    M M M M M M M M M M M M M M M M M M M M M   
+    M M M M M M M M M M M M M M M M M M M M M  
+    M M M M M M M M M M M M M M M M M M M M M  
+    M M M M M M M M M M M M M M M M M M M M M   
+    _ M M M M M M M M M M M M M M M M M M M _  
+    _ _ H H H H H H H H H H H H H H H H H _ _   
+    _ _ _ H H H H H H H G H H H H H H H _ _ _   
+    _ _ _ _ H H H H H M S H H H H H H _ _ _ _   
+    _ _ _ _ _ H H H M S S S M H H H _ _ _ _ _   
+    _ _ _ _ _ _ H M M M M M M M H _ _ _ _ _ _ 
+    _ _ _ _ _ _ _ H M M M M M H _ _ _ _ _ _ _  
+    _ _ _ _ _ _ _ _ H M M M H _ _ _ _ _ _ _ _   
+    _ _ _ _ _ _ _ _ _ H M H _ _ _ _ _ _ _ _ _  
+    _ _ _ _ _ _ _ _ _ _ H _ _ _ _ _ _ _ _ _ _  
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _     
+  </Bricks>
+</Level>

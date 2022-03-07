@@ -3,24 +3,25 @@
 	ColumnCount="23"
 	RowSpacing="3"
 	ColumnSpacing="3"
-	BackgroundTextureLevel="textures/background/background2.png"
+	BackgroundTextureLevel="textures/background/math_2.jpeg"
   BackgroundTexture="textures/background/blackbord.jpg"
   NumberOfLives="5"
 	PaddleTexture="textures/paddle/paddle.png"
 	BallTexture="textures/ball/ball.png"
+  LevelDifficulti="1"
   >
   <BrickTypes>
 
-    <!-- Soft Brick -->
+    <!-- Gift Brick -->
     <BrickType
-			Id="I"
-			Texture="textures/brick/bre.jpg"
+			Id="G"
+			Texture="textures/brick/brick_gift.png"
 			HitPoints="1"
 			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="50"
       AddBalls="250"/>
 
-    <!-- Medium Brick -->
+    <!-- Midimu hard Brick -->
     <BrickType
 			Id="M"
 			Texture="textures/brick/brick_happy.png"
@@ -33,13 +34,13 @@
     <!-- Hard Brick -->
     <BrickType
 			Id="H"
-			Texture="textures/brick/brick_strong.png"
+			Texture="textures/brick/bric_hard.png"
 			HitPoints="3"
 			HitSound="audio/bricks/Meseg.wav"
 			BreakSound="audio/bricks/Meseg.wav"
 			BreakScore="150" />
 
-    <!-- Impenetrable Brick -->
+    <!-- Solid Impenetrable Brick -->
     <BrickType
 			Id="S"
 			Texture="textures/brick/shild.png"
@@ -49,7 +50,7 @@
   </BrickTypes>
 
   <Bricks>
-    M M M M M M M M M M M I M M M M M M M M M M M
+    H M M M M M M M M M M G M M M M M M M M M M H
     M M M M M M M M M M M _ M M M M M M M M M M M
     M M M M M M M M M M M _ M M M M M M M M M M M
     M M M M M M M M M M M _ M M M M M M M M M M M
@@ -68,7 +69,7 @@
     M M M M M M M M M M S _ S M M M M M M M M M M
     M M M M M M M M M M S _ S M M M M M M M M M M
     M M M M M M M M M M S _ S M M M M M M M M M M
-    M M M M M M M M M M S _ S M M M M M M M M M M
+    H M M M M M M M M M S _ S M M M M M M M M M H
     S S S S S S S S S S S _ S S S S S S S S S S S
   </Bricks>
 </Level>

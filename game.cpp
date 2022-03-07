@@ -78,13 +78,12 @@ void Game::RunLevel(string levelPath){
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
      
-
         this -> updatePos(deltaTime);
         this -> draw();
         if (this -> level -> isGameWon()){
             this -> gameScore += gameScoreCurrent;
             gameScoreCurrent= 0;
-            this -> gameScore += (level -> getTezina()*1000.0f - currentFrame) + (level -> getNumberOfBalls() - 1) * 100;
+            this -> gameScore += (level -> getTezina()*1000.0f - currentFrame) + (level -> getNumberOfBalls() - 1) * 100 + this -> level -> getNumberOFLives() * 1500;
             this -> level -> setBallPositionStuck();
             return ;
         }
@@ -99,7 +98,7 @@ void Game::RunLevel(string levelPath){
         numberOfBalls = to_string(this -> level -> getNumberOfBalls());
         numberOfBrick = to_string(this -> level -> getNumberOfBricks());
         numberOfDistroid = to_string(this -> level -> getNumberOfDistroid());
-        levelNumber = to_string(curetLevel + 1);
+        levelNumber = to_string(curetLevel);
         lives = to_string(this->level -> getNumberOFLives());
         float k = 0.0f;
         float of = 5.0f;
@@ -187,7 +186,11 @@ void Game::RunEndScreen(){
     while(gameState == ENDSCREEN && !glfwWindowShouldClose(window)){
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        this -> TextRender ->  RenderText( "WICTORY", 5.0f, 60.0f, 1.0f, glm::vec3(1.0f));
+        int k = 1;
+        this -> TextRender ->  RenderText( "WICTORY", 5.0f, 60.0f, 1.5f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Your Sroe is: "+to_string(this -> gameScore), 5.0f, this -> render -> getHeight() - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Press R to rest game" , 5.0f, this -> render -> getHeight() - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "ESC TO QUIT " , 5.0f, this -> render -> getHeight()  - 60.0f*(k++), 0.5f, glm::vec3(1.0f));
         glfwSwapBuffers(window);
         glfwPollEvents();   
     }
@@ -199,7 +202,11 @@ void Game::RunGameOverScreen(){
     while(gameState == GAMEOVERSCREEN && !glfwWindowShouldClose(window)){
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        this -> TextRender ->  RenderText( "GameOVER", 5.0f, 60.0f, 1.0f, glm::vec3(1.0f));
+         int k = 1;
+        this -> TextRender ->  RenderText( "Game OVER", 5.0f, 60.0f, 1.5f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Your Sroe is: "+to_string(this -> gameScore), 5.0f, this -> render -> getHeight() - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "Press R to rest game" , 5.0f, this -> render -> getHeight() - 60.0f*(k++), 1.0f, glm::vec3(1.0f));
+        this -> TextRender ->  RenderText( "ESC TO QUIT " , 5.0f, this -> render -> getHeight()  - 60.0f*(k++), 0.5f, glm::vec3(1.0f));
 
         glfwSwapBuffers(window);
         glfwPollEvents();   
@@ -241,6 +248,7 @@ void  Game::updatePos(float dt){
             glm::vec2 pad = paddle -> getPos() + paddle -> getSiz()/2.0f;
             glm::vec2 newVelocty = bp - pad;
             newVelocty.y -= paddle -> getSiz().x*2.0f;
+            newVelocty.y/=5.0;
             newVelocty  = normalize(newVelocty);
             b -> setVelocrty(newVelocty * glm::length(b -> getVelocrty()));
         }
