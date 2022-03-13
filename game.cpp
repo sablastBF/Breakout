@@ -74,6 +74,7 @@ void Game::RunLevel(string levelPath){
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;        
         procesInputForPaddle(this -> window);
+        // csadas
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);

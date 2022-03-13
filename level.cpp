@@ -47,6 +47,7 @@ void Level::loadLevelFromFile(string path){
     }
 
     glm::vec2 paddleSize = glm::vec2(100.0f, 15.0f);
+    
     this -> paddle = shared_ptr<Paddle>(new Paddle(paddleSize, paddleTexture, this  -> render));
     
 
